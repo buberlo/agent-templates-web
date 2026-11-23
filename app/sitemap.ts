@@ -1,41 +1,51 @@
 import type { MetadataRoute } from "next";
 import { getAllTemplates, getCatalog } from "@/lib/content/loader";
+import { localizePath, LOCALES } from "@/lib/i18n";
+import { siteMetadataBase } from "@/lib/i18n";
 
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
-  "https://agent-templates.vercel.app";
+const siteUrl = siteMetadataBase();
+
+function pushBoth(
+  routes: MetadataRoute.Sitemap,
+  barePath: string,
+  lastModified: Date,
+) {
+  for (const locale of LOCALES) {
+    routes.push({
+      url: `${siteUrl}${localizePath(locale, barePath)}`,
+      lastModified,
+      alternates: {
+        languages: {
+          en: `${siteUrl}${localizePath("en", barePath)}`,
+          de: `${siteUrl}${localizePath("de", barePath)}`,
+        },
+      },
+    });
+  }
+}
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const catalog = getCatalog();
   const templates = getAllTemplates();
   const now = new Date();
+  const routes: MetadataRoute.Sitemap = [];
 
-  const routes: MetadataRoute.Sitemap = [
-    { url: `${siteUrl}/`, lastModified: now },
-    { url: `${siteUrl}/catalog`, lastModified: now },
-    { url: `${siteUrl}/mcp`, lastModified: now },
-  ];
+  pushBoth(routes, "/", now);
+  pushBoth(routes, "/catalog", now);
+  pushBoth(routes, "/mcp", now);
 
   for (const d of catalog.domains) {
-    routes.push({
-      url: `${siteUrl}/domains/${d.slug}`,
-      lastModified: now,
-    });
+    pushBoth(routes, `/domains/${d.slug}`, now);
     for (const c of d.categories) {
-      routes.push({
-        url: `${siteUrl}/domains/${d.slug}/${c.slug}`,
-        lastModified: now,
-      });
+      pushBoth(routes, `/domains/${d.slug}/${c.slug}`, now);
     }
   }
 
   for (const t of templates) {
-    routes.push({
-      url: `${siteUrl}/templates/${t.frontmatter.id}`,
-      lastModified: t.frontmatter.updated
-        ? new Date(t.frontmatter.updated)
-        : now,
-    });
+    const updated = t.frontmatter.updated
+      ? new Date(t.frontmatter.updated)
+      : now;
+    pushBoth(routes, `/templates/${t.frontmatter.id}`, updated);
   }
 
   return routes;

@@ -5,12 +5,15 @@ import { useMemo, useState } from "react";
 import { TemplateCard, type TemplateCardData } from "./template-card";
 import { formatSlugLabel } from "@/lib/utils";
 import { PLATFORM_LABELS } from "@/lib/content/constants";
+import { formatMessage } from "@/lib/i18n/format";
+import { useLocale } from "./locale-provider";
 
 export type CatalogSearchItem = TemplateCardData & { searchText: string };
 
 const RISK_LEVELS = ["low", "medium", "high"] as const;
 
 export function CatalogSearch({ items }: { items: CatalogSearchItem[] }) {
+  const { dict } = useLocale();
   const domains = useMemo(
     () => [...new Set(items.map((i) => i.domain))].sort(),
     [items],
@@ -93,19 +96,19 @@ export function CatalogSearch({ items }: { items: CatalogSearchItem[] }) {
     <div className="space-y-6">
       <div className="rounded-xl border border-border bg-card/50 p-4">
         <label htmlFor="catalog-q" className="sr-only">
-          Search templates
+          {dict.catalog.searchLabel}
         </label>
         <input
           id="catalog-q"
           type="search"
-          placeholder="Full-text search (title, tags, prompt text)…"
+          placeholder={dict.catalog.searchPlaceholder}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           className="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm outline-none ring-sky-500/30 focus:ring-2"
         />
         <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
           <select
-            aria-label="Filter by domain"
+            aria-label={dict.common.allDomains}
             value={domain}
             onChange={(e) => {
               setDomain(e.target.value);
@@ -113,7 +116,7 @@ export function CatalogSearch({ items }: { items: CatalogSearchItem[] }) {
             }}
             className="rounded-lg border border-border bg-background px-3 py-2 text-sm"
           >
-            <option value="">All domains</option>
+            <option value="">{dict.common.allDomains}</option>
             {domains.map((d) => (
               <option key={d} value={d}>
                 {formatSlugLabel(d)}
@@ -121,13 +124,13 @@ export function CatalogSearch({ items }: { items: CatalogSearchItem[] }) {
             ))}
           </select>
           <select
-            aria-label="Filter by category"
+            aria-label={dict.common.allCategories}
             value={category}
             disabled={!domain}
             onChange={(e) => setCategory(e.target.value)}
             className="rounded-lg border border-border bg-background px-3 py-2 text-sm disabled:opacity-50"
           >
-            <option value="">All categories</option>
+            <option value="">{dict.common.allCategories}</option>
             {categories.map((c) => (
               <option key={c} value={c}>
                 {formatSlugLabel(c)}
@@ -135,12 +138,12 @@ export function CatalogSearch({ items }: { items: CatalogSearchItem[] }) {
             ))}
           </select>
           <select
-            aria-label="Filter by target agent"
+            aria-label={dict.common.allAgents}
             value={agent}
             onChange={(e) => setAgent(e.target.value)}
             className="rounded-lg border border-border bg-background px-3 py-2 text-sm"
           >
-            <option value="">All agents</option>
+            <option value="">{dict.common.allAgents}</option>
             {agents.map((a) => (
               <option key={a} value={a}>
                 {PLATFORM_LABELS[a] || a}
@@ -148,25 +151,29 @@ export function CatalogSearch({ items }: { items: CatalogSearchItem[] }) {
             ))}
           </select>
           <select
-            aria-label="Filter by risk"
+            aria-label={dict.common.allRisk}
             value={risk}
             onChange={(e) => setRisk(e.target.value)}
             className="rounded-lg border border-border bg-background px-3 py-2 text-sm"
           >
-            <option value="">All risk levels</option>
+            <option value="">{dict.common.allRisk}</option>
             {RISK_LEVELS.map((r) => (
               <option key={r} value={r}>
-                {r}
+                {r === "high"
+                  ? dict.risk.high
+                  : r === "medium"
+                    ? dict.risk.medium
+                    : dict.risk.low}
               </option>
             ))}
           </select>
           <select
-            aria-label="Filter by tag"
+            aria-label={dict.common.allTags}
             value={tag}
             onChange={(e) => setTag(e.target.value)}
             className="rounded-lg border border-border bg-background px-3 py-2 text-sm"
           >
-            <option value="">All tags</option>
+            <option value="">{dict.common.allTags}</option>
             {allTags.slice(0, 200).map((t) => (
               <option key={t} value={t}>
                 {t}
@@ -175,7 +182,10 @@ export function CatalogSearch({ items }: { items: CatalogSearchItem[] }) {
           </select>
         </div>
         <p className="mt-3 text-sm text-muted">
-          Showing {filtered.length} of {items.length} templates
+          {formatMessage(dict.common.showingCount, {
+            shown: filtered.length,
+            total: items.length,
+          })}
         </p>
       </div>
 
@@ -186,7 +196,7 @@ export function CatalogSearch({ items }: { items: CatalogSearchItem[] }) {
       </div>
 
       {filtered.length === 0 && (
-        <p className="text-center text-muted">No templates match your filters.</p>
+        <p className="text-center text-muted">{dict.common.noTemplatesMatch}</p>
       )}
     </div>
   );

@@ -1,6 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import { PLATFORM_LABELS } from "@/lib/content/constants";
 import { RiskBadge } from "./risk-badge";
+import { useLocale } from "./locale-provider";
 
 export interface TemplateCardData {
   id: string;
@@ -13,6 +16,8 @@ export interface TemplateCardData {
 }
 
 export function TemplateCard({ template }: { template: TemplateCardData }) {
+  const { href } = useLocale();
+
   return (
     <article className="flex flex-col rounded-xl border border-border bg-card/60 p-5 transition hover:border-sky-500/40 hover:bg-card">
       <div className="mb-3 flex flex-wrap items-center gap-2">
@@ -22,7 +27,10 @@ export function TemplateCard({ template }: { template: TemplateCardData }) {
         </span>
       </div>
       <h3 className="text-lg font-semibold leading-snug">
-        <Link href={`/templates/${template.id}`} className="hover:text-sky-400">
+        <Link
+          href={href(`/templates/${template.id}`)}
+          className="hover:text-sky-400"
+        >
           {template.title}
         </Link>
       </h3>
