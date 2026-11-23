@@ -1,0 +1,21 @@
+# Example workflow for buberlo/agent-templates (content repo).
+# Add as .github/workflows/trigger-templates-site.yml — do NOT commit secrets here.
+#
+# Prerequisites:
+# 1. Create a Vercel Deploy Hook for the agent-templates-web project.
+# 2. Store the hook URL as repository secret DEPLOY_HOOK_URL in agent-templates.
+
+name: Rebuild templates website
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy-hook:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Vercel deployment
+        run: curl -fsS -X POST "$DEPLOY_HOOK_URL"
+        env:
+          DEPLOY_HOOK_URL: ${{ secrets.DEPLOY_HOOK_URL }}
