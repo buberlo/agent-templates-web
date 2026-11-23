@@ -1,0 +1,83 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { getMcpCatalog } from "@/lib/content/loader";
+import { formatSlugLabel } from "@/lib/utils";
+
+export const metadata: Metadata = {
+  title: "MCP catalog",
+  description: "MCP servers referenced by the agent-templates content database.",
+};
+
+export default function McpPage() {
+  const mcp = getMcpCatalog();
+  return (
+    <div className="space-y-8">
+      <div>
+        <h1 className="text-3xl font-bold">MCP server catalog</h1>
+        <p className="mt-2 text-muted">
+          {mcp.count ?? mcp.servers.length} entries from{" "}
+          <code className="rounded bg-black/20 px-1">mcp/catalog.json</code> in
+          the content repo (generated{" "}
+          {mcp.generated_at || "at build"}).
+        </p>
+      </div>
+
+      <div className="overflow-x-auto rounded-xl border border-border">
+        <table className="w-full min-w-[720px] text-left text-sm">
+          <thead className="border-b border-border bg-card/60 text-muted">
+            <tr>
+              <th className="px-4 py-3 font-medium">Name</th>
+              <th className="px-4 py-3 font-medium">Type</th>
+              <th className="px-4 py-3 font-medium">Categories</th>
+              <th className="px-4 py-3 font-medium">Auth</th>
+            </tr>
+          </thead>
+          <tbody>
+            {mcp.servers.map((s) => (
+              <tr key={s.name + s.url} className="border-b border-border/60">
+                <td className="px-4 py-3 align-top">
+                  <a
+                    href={s.url}
+                    className="font-medium text-sky-400 hover:underline"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    {s.name}
+                  </a>
+                  {s.risk_notes ? (
+                    <p className="mt-1 text-xs text-muted">{s.risk_notes}</p>
+                  ) : null}
+                </td>
+                <td className="px-4 py-3 align-top text-muted">{s.type}</td>
+                <td className="px-4 py-3 align-top">
+                  <div className="flex flex-wrap gap-1">
+                    {s.categories.slice(0, 4).map((c) => {
+                      const [dom, cat] = c.split("/");
+                      return dom && cat ? (
+                        <Link
+                          key={c}
+                          href={`/domains/${dom}/${cat}`}
+                          className="rounded bg-white/5 px-1.5 py-0.5 text-xs hover:text-sky-400"
+                        >
+                          {formatSlugLabel(cat)}
+                        </Link>
+                      ) : (
+                        <span key={c} className="text-xs text-muted">
+                          {c}
+                        </span>
+                      );
+                    })}
+                    {s.categories.length > 4 ? (
+                      <span className="text-xs text-muted">+{s.categories.length - 4}</span>
+                    ) : null}
+                  </div>
+                </td>
+                <td className="px-4 py-3 align-top text-muted">{s.auth}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
