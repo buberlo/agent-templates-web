@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { getSiteStats } from "@/lib/content/loader";
+import { ogHomeContent } from "@/lib/views/og-home";
 
 export const runtime = "nodejs";
 export const alt = "Agent Templates";
@@ -7,7 +7,7 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default function OgImage() {
-  const stats = getSiteStats();
+  const content = ogHomeContent("en");
   return new ImageResponse(
     (
       <div
@@ -24,7 +24,7 @@ export default function OgImage() {
           fontFamily: "system-ui, sans-serif",
         }}
       >
-        <span style={{ fontSize: 28, color: "#38bdf8" }}>Agent Templates</span>
+        <span style={{ fontSize: 28, color: "#38bdf8" }}>{content.brand}</span>
         <div
           style={{
             fontSize: 56,
@@ -33,10 +33,10 @@ export default function OgImage() {
             lineHeight: 1.1,
           }}
         >
-          Reusable agent instruction library
+          {content.title}
         </div>
         <div style={{ fontSize: 28, marginTop: 24, color: "#94a3b8" }}>
-          {`${stats.templateCount} templates · ${stats.domainCount} domains · ${stats.mcpServerCount} MCP entries`}
+          {content.stats}
         </div>
       </div>
     ),

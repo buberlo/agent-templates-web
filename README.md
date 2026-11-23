@@ -57,9 +57,17 @@ The content repo should trigger a new deployment when `main` changes:
 
 Do not commit the deploy hook URL into either repository.
 
+## Locales
+
+- **English (default):** `/`, `/catalog`, `/templates/…`
+- **German UI:** `/de`, `/de/catalog`, `/de/templates/…`
+
+Template bodies from the content repo stay in their source language (currently mostly German sections in the repository files). Only site chrome is translated via typed dictionaries in `lib/i18n/dictionaries/`.
+
 ## Architecture
 
 - **`scripts/fetch-content.mjs`** — shallow clone of the content repository.
+- **`lib/i18n/`** — UI locales (`en`, `de`) and path helpers (`/de` prefix).
 - **`lib/content/`** — parse frontmatter, bilingual section headings (German/English), catalog + MCP loaders.
 - **`lib/export/`** — platform exports (Hermes/OpenClaw `SKILL.md`, `CLAUDE.md`, `AGENTS.md`, Cursor `.mdc`, generic prompt). Intended for reuse by a future CLI.
 - **Pages** — landing, catalog (client-side FlexSearch index), domain/category, template detail, MCP table.
