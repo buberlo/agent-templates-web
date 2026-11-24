@@ -1,8 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
-import matter from "gray-matter";
 import { getContentRoot } from "./config";
-import { parseSections, stripMarkdownForSearch } from "./sections";
+import { parseTemplateRaw } from "./template-parse";
 import type {
   AdapterNote,
   CatalogJson,
@@ -11,7 +10,6 @@ import type {
   McpCatalog,
   SiteStats,
   TemplateDocument,
-  TemplateFrontmatter,
 } from "./types";
 
 const CACHE: {
@@ -42,30 +40,9 @@ function loadCatalog(): CatalogJson {
 function parseTemplateFile(
   filePath: string,
   relativePath: string,
-): TemplateDocument {
+): TemplateDocument | null {
   const raw = fs.readFileSync(filePath, "utf8");
-  const { data, content } = matter(raw);
-  const frontmatter = data as TemplateFrontmatter;
-  const sections = parseSections(content);
-  const searchText = stripMarkdownForSearch(
-    [
-      frontmatter.title,
-      frontmatter.id,
-      frontmatter.domain,
-      frontmatter.category,
-      ...(frontmatter.tags || []),
-      ...(frontmatter.target_agents || []),
-      sections.systemPromptText || "",
-      content,
-    ].join(" "),
-  );
-  return {
-    frontmatter,
-    sections,
-    body: content,
-    filePath: relativePath.replace(/\\/g, "/"),
-    searchText,
-  };
+  return parseTemplateRaw(raw, relativePath);
 }
 
 function loadAllTemplates(): Map<string, TemplateDocument> {
@@ -80,7 +57,9 @@ function loadAllTemplates(): Map<string, TemplateDocument> {
       console.warn("Missing template file:", entry.path);
       continue;
     }
-    map.set(entry.id, parseTemplateFile(full, entry.path));
+    const doc = parseTemplateFile(full, entry.path);
+    if (!doc) continue;
+    map.set(entry.id, doc);
   }
   CACHE.templates = map;
   return map;
@@ -165,14 +144,15 @@ export function getSiteStats(): SiteStats {
     0,
   );
   const mcp = getMcpCatalog();
+  const templates = getAllTemplates();
   const platformSet = new Set<string>();
-  for (const t of catalog.templates) {
-    for (const a of t.target_agents) platformSet.add(a);
+  for (const t of templates) {
+    for (const a of t.frontmatter.target_agents) platformSet.add(a);
   }
   return {
     domainCount: catalog.domains.length,
     categoryCount,
-    templateCount: catalog.templates.length,
+    templateCount: templates.length,
     mcpServerCount: mcp.count ?? mcp.servers.length,
     platforms: [...platformSet].sort(),
   };
