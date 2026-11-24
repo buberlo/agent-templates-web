@@ -10,6 +10,20 @@ export function formatInvalidFrontmatterWarning(
   return `[content] Skipping template with invalid YAML frontmatter: ${relativePath}\n  ${message}`;
 }
 
+export function validateGrokBotTemplateUrl(value: unknown): string | undefined {
+  if (typeof value !== "string" || !/^https:\/\//i.test(value)) return undefined;
+
+  try {
+    const url = new URL(value);
+    const isXaiHost = url.hostname === "x.ai" || url.hostname.endsWith(".x.ai");
+    return url.protocol === "https:" && isXaiHost && !url.username && !url.password
+      ? url.href
+      : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 /** Parse template markdown; returns null when frontmatter YAML is invalid. */
 export function parseTemplateRaw(
   raw: string,
@@ -26,7 +40,12 @@ export function parseTemplateRaw(
     return null;
   }
 
-  const frontmatter = data as TemplateFrontmatter;
+  const { grokbot_template_url, ...fields } = data as TemplateFrontmatter;
+  const grokBotTemplateUrl = validateGrokBotTemplateUrl(grokbot_template_url);
+  const frontmatter: TemplateFrontmatter = {
+    ...fields,
+    ...(grokBotTemplateUrl && { grokbot_template_url: grokBotTemplateUrl }),
+  };
   const sections = parseSections(content);
   const searchText = stripMarkdownForSearch(
     [

@@ -1,12 +1,15 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowDownToLine, ArrowUpRight, Plug } from "lucide-react";
+import { CopyButton } from "@/components/copy-button";
 import { ExampleKindBadge } from "@/components/example-kind-badge";
 import { ExportPanel } from "@/components/export-panel";
 import { CodeBlock, MarkdownContent } from "@/components/markdown-content";
 import { RiskBadge } from "@/components/risk-badge";
 import { githubBlobUrl, PLATFORM_LABELS, suggestIssueUrl } from "@/lib/content/config";
+import { GROK_BOT_DOCS_URL } from "@/lib/content/grok-bot-links";
 import { getTemplate } from "@/lib/content/loader";
+import { exportTemplate } from "@/lib/export";
 import { getDictionary, localizePath, type Locale } from "@/lib/i18n";
 import { formatSlugLabel } from "@/lib/utils";
 
@@ -17,6 +20,7 @@ export function TemplatePageContent({ locale, id }: { locale: Locale; id: string
 
   const fm = doc.frontmatter;
   const content = doc.sections;
+  const grok = d.howItWorks.grokBot;
   const mcpTools = [...new Set(fm.required_tools
     .filter((tool) => /\bmcp\b/i.test(tool.name) || /\bmcp\b/i.test(tool.install))
     .map((tool) => tool.name))];
@@ -83,6 +87,24 @@ export function TemplatePageContent({ locale, id }: { locale: Locale; id: string
           <a href={suggestIssueUrl(fm.id, doc.filePath)} className="text-link">{d.common.suggestImprovement}</a>
         </div>
       </header>
+
+      <section className="panel border-control bg-surface p-5 sm:p-8" aria-labelledby="grok-bot-heading">
+        <h2 id="grok-bot-heading" className="section-title">{grok.heading}</h2>
+        <ol className="mt-4 list-decimal space-y-2 pl-5 text-sm leading-relaxed text-muted marker:font-semibold marker:text-accent">
+          <li>{grok.create}</li>
+          <li>{grok.paste}</li>
+          <li>{grok.connect}</li>
+        </ol>
+        <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-3">
+          {fm.grokbot_template_url && (
+            <a href={fm.grokbot_template_url} target="_blank" rel="noopener noreferrer" className="button-primary">
+              {grok.add}<ArrowUpRight size={16} aria-hidden="true" />
+            </a>
+          )}
+          <CopyButton text={exportTemplate(doc, "grokbot").content} label={grok.copy} />
+          <a href={GROK_BOT_DOCS_URL} className="text-link text-sm">{grok.docs}</a>
+        </div>
+      </section>
 
       <div className="grid min-w-0 items-start gap-6 lg:grid-cols-[14rem_minmax(0,1fr)] lg:gap-10">
         <nav aria-label={d.template.onPage} className="sticky top-24 z-20 min-w-0 border-b bg-background py-2 sm:top-14 lg:top-[4.5rem] lg:max-h-[calc(100dvh-6rem)] lg:overflow-y-auto lg:border-b-0">

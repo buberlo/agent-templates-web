@@ -162,10 +162,52 @@ function genericPrompt(doc: TemplateDocument): string {
     .trim();
 }
 
+function grokBotMessage(doc: TemplateDocument): string {
+  const fm = doc.frontmatter;
+  const tools = fm.required_tools.map(({ name, install, version_notes }) =>
+    `- ${[name, install, version_notes].filter(Boolean).join(" — ")}`,
+  );
+
+  return [
+    `Your role is ${fm.title}. Use the following instructions for this job.`,
+    "",
+    "Job",
+    section(doc, "purpose") || fm.title,
+    "",
+    "System prompt",
+    doc.sections.systemPromptText || doc.sections.systemPrompt || "",
+    "",
+    "Workflow",
+    section(doc, "workflow"),
+    "",
+    "Tool stack and sources",
+    "Use the listed apps and MCP connectors as applicable. Tell me which ones I need to connect before you start.",
+    ...tools,
+    section(doc, "toolStack"),
+    "",
+    "Definition of done",
+    section(doc, "definitionOfDone"),
+    ...fm.outputs.map((output) => `- ${output}`),
+    "",
+    "Security and approval boundaries",
+    section(doc, "security"),
+    "Ask me before taking any action that requires approval.",
+    "",
+    "Save this workflow as a reusable skill and remember these rules for future messages.",
+    "If this work is recurring, propose a routine for my approval.",
+  ].join("\n");
+}
+
 const EXPORT_MAP: Record<
   ExportTarget,
   (doc: TemplateDocument) => ExportResult
 > = {
+  grokbot: (doc) => ({
+    filename: `${doc.frontmatter.id}-grok-bot.txt`,
+    mimeType: "text/plain",
+    content: grokBotMessage(doc),
+    description: "First setup message for a new Grok Bot",
+  }),
   hermes: (doc) => ({
     filename: `${doc.frontmatter.id}-SKILL.md`,
     mimeType: "text/markdown",
@@ -227,7 +269,7 @@ export function exportTemplateForAgents(
     cursor: "cursor",
     generic: "generic",
     "generic-mcp-agents": "generic",
-    grokbot: "cursor",
+    grokbot: "grokbot",
   };
   const target = map[agent];
   if (!target) return null;

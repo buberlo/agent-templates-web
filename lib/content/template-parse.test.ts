@@ -5,6 +5,7 @@ import test from "node:test";
 import {
   formatInvalidFrontmatterWarning,
   parseTemplateRaw,
+  validateGrokBotTemplateUrl,
 } from "./template-parse";
 
 const fixturesDir = path.join(import.meta.dirname, "__fixtures__");
@@ -52,4 +53,34 @@ test("formatInvalidFrontmatterWarning includes path and message", () => {
   );
   assert.match(text, /templates\/foo\.md/);
   assert.match(text, /implicit mapping pair/);
+});
+test("Grok Bot template URLs require HTTPS on x.ai or a subdomain", () => {
+  for (const url of ["https://x.ai/", "https://bot.x.ai/"]) {
+    assert.equal(validateGrokBotTemplateUrl(url), url);
+  }
+  for (const invalid of [
+    undefined,
+    123,
+    "http://x.ai/",
+    "https://example.com/",
+    "https://x.ai.example.com/",
+    "https://notx.ai/",
+    "https://x.ai@example.com/",
+    "https://example.com@x.ai/",
+    "javascript:alert(1)",
+    "ftp://x.ai/",
+    "https:x.ai",
+    "//x.ai/",
+  ]) {
+    assert.equal(validateGrokBotTemplateUrl(invalid), undefined);
+  }
+});
+
+test("parseTemplateRaw omits invalid Grok Bot template URLs", () => {
+  const valid = parseTemplateRaw("---\ngrokbot_template_url: https://x.ai/\n---\n", "fixture.md");
+  assert.equal(valid?.frontmatter.grokbot_template_url, "https://x.ai/");
+
+  const invalid = parseTemplateRaw("---\ngrokbot_template_url: http://x.ai/\n---\n", "fixture.md");
+  assert.ok(invalid);
+  assert.ok(!("grokbot_template_url" in invalid.frontmatter));
 });

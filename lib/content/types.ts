@@ -14,6 +14,7 @@ export interface TemplateFrontmatter {
   tags: string[];
   target_agents: string[];
   required_tools: RequiredTool[];
+  grokbot_template_url?: string;
   inputs: string[];
   outputs: string[];
   risk_level: "low" | "medium" | "high";

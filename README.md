@@ -59,17 +59,21 @@ Do not commit the deploy hook URL into either repository.
 
 ## Locales
 
-- **English (default):** `/`, `/catalog`, `/templates/…`
-- **German UI:** `/de`, `/de/catalog`, `/de/templates/…`
+- **English (default):** `/`, `/catalog`, `/how-it-works`, `/templates/…`
+- **German UI:** `/de`, `/de/catalog`, `/de/how-it-works`, `/de/templates/…`
 
 Template bodies from the content repo stay in their source language (currently mostly German sections in the repository files). Only site chrome is translated via typed dictionaries in `lib/i18n/dictionaries/`.
+
+## Grok Bot exports
+
+Every template has a copyable Grok Bot setup message. Content authors can add the optional `grokbot_template_url` frontmatter field to enable **Add to Grok Bot**. Use the official published template link on HTTPS at `x.ai` or a subdomain of `x.ai`. The site uses supplied links and will never fabricate them. See [Grok Bot templates](docs/grok-bot-templates.md) for the publishing steps.
 
 ## Architecture
 
 - **`scripts/fetch-content.mjs`** — shallow clone of the content repository.
 - **`lib/i18n/`** — UI locales (`en`, `de`) and path helpers (`/de` prefix).
 - **`lib/content/`** — parse frontmatter, bilingual section headings (German/English), catalog + MCP loaders.
-- **`lib/export/`** — platform exports (Hermes/OpenClaw `SKILL.md`, `CLAUDE.md`, `AGENTS.md`, Cursor `.mdc`, generic prompt). Intended for reuse by a future CLI.
+- **`lib/export/`** — platform exports (Hermes/OpenClaw `SKILL.md`, `CLAUDE.md`, `AGENTS.md`, Cursor `.mdc`, Grok Bot setup message, generic prompt). Intended for reuse by a future CLI.
 - **Pages** — landing, catalog (client-side FlexSearch index), domain/category, template detail, MCP table.
 
 ## Roadmap
