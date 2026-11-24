@@ -87,7 +87,6 @@ export type Dictionary = {
     value: string;
     featured: string;
     browseDomains: string;
-    importHeading: string;
     importFind: string;
     importFindText: string;
     importExport: string;
@@ -109,6 +108,31 @@ export type Dictionary = {
     adaptersNote: string;
     domainsHeading: string;
     viewAllCatalog: string;
+  };
+  howItWorks: {
+    title: string;
+    kicker: string;
+    intro: string;
+    readGuide: string;
+    grokBot: {
+      heading: string;
+      create: string;
+      paste: string;
+      connect: string;
+      copy: string;
+      add: string;
+      docs: string;
+      publishingHeading: string;
+      publishing: string;
+      gallery: string;
+      guide: string;
+    };
+    otherAgents: string;
+    hermesOpenClaw: string[];
+    claudeCode: string[];
+    codex: string[];
+    cursor: string[];
+    generic: string[];
   };
   catalog: {
     empty: string;
@@ -153,6 +177,7 @@ export type Dictionary = {
     copyExport: string;
     platformLabel: string;
     descriptions: {
+      grokbot: string;
       hermes: string;
       openclaw: string;
       "claude-code": string;

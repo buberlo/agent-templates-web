@@ -48,6 +48,15 @@ export function catalogMetadata(locale: Locale): Metadata {
   };
 }
 
+export function howItWorksMetadata(locale: Locale): Metadata {
+  const { howItWorks } = getDictionary(locale);
+  return {
+    title: howItWorks.title,
+    description: howItWorks.intro,
+    alternates: languageAlternates("/how-it-works", locale),
+  };
+}
+
 export function mcpMetadata(locale: Locale): Metadata {
   const d = getDictionary(locale);
   return {

@@ -33,6 +33,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   pushBoth(routes, "/", now);
   pushBoth(routes, "/catalog", now);
   pushBoth(routes, "/mcp", now);
+  pushBoth(routes, "/how-it-works", now);
 
   for (const d of catalog.domains) {
     pushBoth(routes, `/domains/${d.slug}`, now);

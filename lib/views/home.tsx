@@ -100,6 +100,29 @@ export function HomePageContent({ locale }: { locale: Locale }) {
         </section>
       )}
 
+      <section className="panel grid gap-6 bg-surface p-5 sm:p-8 lg:grid-cols-[1fr_2.5fr]">
+        <div>
+          <h2 className="section-title">{d.howItWorks.title}</h2>
+          <p className="mt-3 max-w-prose leading-relaxed text-muted">{d.howItWorks.intro}</p>
+          <Link href={localizePath(locale, "/how-it-works")} className="text-link mt-3 inline-flex items-center gap-2 text-sm">
+            {d.howItWorks.readGuide} <ArrowRight size={16} aria-hidden="true" />
+          </Link>
+        </div>
+        <ol className="grid gap-5 sm:grid-cols-3">
+          {[
+            { icon: Search, title: d.home.importFind, body: d.home.importFindText },
+            { icon: ArrowDownToLine, title: d.home.importExport, body: d.home.importExportText },
+            { icon: Terminal, title: d.home.importUse, body: d.home.importUseText },
+          ].map(({ icon: Icon, title, body }) => (
+            <li key={title} className="border-t pt-3">
+              <Icon size={20} className="mb-3 text-accent" aria-hidden="true" />
+              <h3 className="font-semibold">{title}</h3>
+              <p className="mt-1 text-sm leading-relaxed text-muted">{body}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+
       {catalog.domains.length > 0 && (
         <section>
           <h2 className="section-title mb-5 border-b pb-4">{d.home.browseDomains}</h2>
@@ -124,23 +147,6 @@ export function HomePageContent({ locale }: { locale: Locale }) {
           </div>
         </section>
       )}
-
-      <section className="panel grid gap-6 bg-surface p-5 sm:p-8 lg:grid-cols-[1fr_2.5fr]">
-        <h2 className="section-title max-w-[16ch]">{d.home.importHeading}</h2>
-        <ol className="grid gap-5 sm:grid-cols-3">
-          {[
-            { icon: Search, title: d.home.importFind, body: d.home.importFindText },
-            { icon: ArrowDownToLine, title: d.home.importExport, body: d.home.importExportText },
-            { icon: Terminal, title: d.home.importUse, body: d.home.importUseText },
-          ].map(({ icon: Icon, title, body }) => (
-            <li key={title} className="border-t pt-3">
-              <Icon size={20} className="mb-3 text-accent" aria-hidden="true" />
-              <h3 className="font-semibold">{title}</h3>
-              <p className="mt-1 text-sm leading-relaxed text-muted">{body}</p>
-            </li>
-          ))}
-        </ol>
-      </section>
     </div>
   );
 }

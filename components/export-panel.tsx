@@ -2,7 +2,6 @@
 
 import {
   EXPORT_TARGETS,
-  PLATFORM_LABELS,
   type ExportTarget,
 } from "@/lib/content/constants";
 import { exportTemplate } from "@/lib/export";
@@ -24,6 +23,7 @@ export type ExportPanelDoc = {
     | "definitionOfDone"
     | "security"
     | "pitfalls"
+    | "systemPrompt"
     | "systemPromptText"
   >;
   body: string;
@@ -71,7 +71,7 @@ export function ExportPanel({ doc }: { doc: ExportPanelDoc }) {
                 className="peer sr-only"
               />
               <span className="button cursor-pointer peer-checked:border-accent peer-checked:bg-surface peer-checked:text-accent peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-accent">
-                {PLATFORM_LABELS[platform]}
+                {dict.platforms[platform]}
               </span>
             </label>
           ))}

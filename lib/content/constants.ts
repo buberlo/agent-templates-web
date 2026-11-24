@@ -10,6 +10,7 @@ export const PLATFORM_LABELS: Record<string, string> = {
 };
 
 export const EXPORT_TARGETS = [
+  "grokbot",
   "hermes",
   "openclaw",
   "claude-code",
