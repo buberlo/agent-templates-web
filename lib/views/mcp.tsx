@@ -9,7 +9,7 @@ export function McpPageContent({ locale }: { locale: Locale }) {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold">{d.mcp.title}</h1>
+        <h1 className="page-title">{d.mcp.title}</h1>
         <p className="mt-2 text-muted">
           {formatMessage(d.mcp.intro, {
             count: mcp.count ?? mcp.servers.length,
@@ -34,7 +34,7 @@ export function McpPageContent({ locale }: { locale: Locale }) {
                 <td className="px-4 py-3 align-top">
                   <a
                     href={s.url}
-                    className="font-medium text-sky-400 hover:underline"
+                    className="font-medium text-link"
                     rel="noopener noreferrer"
                     target="_blank"
                   >
@@ -53,7 +53,7 @@ export function McpPageContent({ locale }: { locale: Locale }) {
                         <Link
                           key={c}
                           href={localizePath(locale, `/domains/${dom}/${cat}`)}
-                          className="rounded bg-white/5 px-1.5 py-0.5 text-xs hover:text-sky-400"
+                          className="rounded bg-surface px-1.5 py-0.5 text-xs hover:text-accent"
                         >
                           {formatSlugLabel(cat)}
                         </Link>

@@ -27,6 +27,11 @@ export type Dictionary = {
     websiteRepo: string;
   };
   common: {
+    taskComplete: string;
+    taskIncomplete: string;
+    skipContent: string;
+    navigation: string;
+    resetFilters: string;
     catalog: string;
     templates: string;
     template: string;
@@ -55,6 +60,16 @@ export type Dictionary = {
     name: string;
     type: string;
   };
+  platforms: {
+    hermes: string;
+    grokbot: string;
+    openclaw: string;
+    "claude-code": string;
+    codex: string;
+    cursor: string;
+    "generic-mcp-agents": string;
+    generic: string;
+  };
   risk: {
     suffix: string;
     low: string;
@@ -67,6 +82,18 @@ export type Dictionary = {
     unknown: string;
   };
   home: {
+    headlineStart: string;
+    headlineEnd: string;
+    value: string;
+    featured: string;
+    browseDomains: string;
+    importHeading: string;
+    importFind: string;
+    importFindText: string;
+    importExport: string;
+    importExportText: string;
+    importUse: string;
+    importUseText: string;
     title: string;
     introBeforeLink: string;
     introAfterLink: string;
@@ -84,6 +111,9 @@ export type Dictionary = {
     viewAllCatalog: string;
   };
   catalog: {
+    empty: string;
+    filters: string;
+    searchAction: string;
     title: string;
     intro: string;
     searchPlaceholder: string;
@@ -99,6 +129,9 @@ export type Dictionary = {
     domainMeta: string;
   };
   template: {
+    onPage: string;
+    mcpTools: string;
+    copyFailed: string;
   notFound: string;
   noPromptBlock: string;
   sections: {

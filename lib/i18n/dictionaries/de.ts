@@ -26,6 +26,11 @@ const de: Dictionary = {
     websiteRepo: "Website-Repo",
   },
   common: {
+    taskComplete: "Aufgabe erledigt",
+    taskIncomplete: "Aufgabe offen",
+    skipContent: "Zum Inhalt springen",
+    navigation: "Hauptnavigation",
+    resetFilters: "Filter zurücksetzen",
     catalog: "Katalog",
     templates: "Vorlagen",
     template: "Vorlage",
@@ -54,6 +59,16 @@ const de: Dictionary = {
     name: "Name",
     type: "Typ",
   },
+  platforms: {
+    hermes: "Hermes",
+    grokbot: "Grok Bot",
+    openclaw: "OpenClaw",
+    "claude-code": "Claude Code",
+    codex: "Codex",
+    cursor: "Cursor",
+    "generic-mcp-agents": "Generic MCP agents",
+    generic: "Generic",
+  },
   risk: {
     suffix: "Risiko",
     low: "niedrig",
@@ -66,6 +81,18 @@ const de: Dictionary = {
     unknown: "Beispiel",
   },
   home: {
+    headlineStart: "Bessere Agents bauen.",
+    headlineEnd: "Mit einer Vorlage starten.",
+    value: "Finde wiederverwendbare Anweisungen für KI-Agents mit Abläufen, Werkzeugen und Sicherheitshinweisen. Exportiere die Vorlage für deinen Agent.",
+    featured: "Ausgewählte Vorlagen",
+    browseDomains: "Nach Themengebiet stöbern",
+    importHeading: "Von der Vorlage zum Agent",
+    importFind: "Vorlage auswählen",
+    importFindText: "Prüfe den Ablauf, benötigte Werkzeuge und Beispiele für deine Aufgabe.",
+    importExport: "Format wählen",
+    importExportText: "Lade SKILL.md für Hermes oder OpenClaw, CLAUDE.md für Claude Code, AGENTS.md für Codex oder eine .mdc-Regel für Cursor herunter.",
+    importUse: "Im Agent verwenden",
+    importUseText: "Lege die Datei in deinem Projekt ab oder kopiere den allgemeinen Prompt in die Anweisungen deines Agents.",
     title: "Wiederverwendbare Agenten-Instruktionen",
     introBeforeLink: "Diese Website rendert ",
     introAfterLink:
@@ -86,10 +113,12 @@ const de: Dictionary = {
     viewAllCatalog: "Alle im Katalog anzeigen",
   },
   catalog: {
+    empty: "Dieser Katalog enthält noch keine Vorlagen.",
+    filters: "Filter",
+    searchAction: "Suchen",
     title: "Vorlagenkatalog",
-    intro:
-      "Volltextsuche über Titel, Tags und Prompt-Inhalte (zur Build-Zeit indexiert).",
-    searchPlaceholder: "Volltextsuche (Titel, Tags, Prompt-Text)…",
+    intro: "Durchsuche Agent-Anweisungen und filtere nach Themengebiet, Kategorie, Plattform oder Tag.",
+    searchPlaceholder: "Vorlagen, Tags oder Abläufe suchen…",
     searchLabel: "Vorlagen durchsuchen",
   },
   mcp: {
@@ -103,6 +132,9 @@ const de: Dictionary = {
     domainMeta: "Agenten-Vorlagen in der Domain {domain}.",
   },
   template: {
+    onPage: "Auf dieser Seite",
+    mcpTools: "MCP-Werkzeuge",
+    copyFailed: "Kopieren fehlgeschlagen. Bitte markiere und kopiere den Text manuell.",
     notFound: "Vorlage nicht gefunden",
     noPromptBlock: "Kein eingeschlossener Prompt-Block gefunden.",
     sections: {

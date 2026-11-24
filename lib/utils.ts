@@ -7,7 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 export function formatSlugLabel(slug: string): string {
   return slug
     .split("-")
-    .map((w) => (w.length <= 3 ? w.toUpperCase() : w))
+    .map((w) => (["ai", "api", "crm", "hr", "it", "mcp", "sql", "ui", "ux"].includes(w) ? w.toUpperCase() : w.charAt(0).toUpperCase() + w.slice(1)))
     .join(" ")
     .replace(/\bAi\b/gi, "AI")
     .replace(/\bCrm\b/gi, "CRM")
@@ -17,10 +17,10 @@ export function formatSlugLabel(slug: string): string {
 export function riskBadgeClass(level: string): string {
   switch (level) {
     case "high":
-      return "bg-red-500/15 text-red-400 border-red-500/30";
+      return "bg-high/10 text-high border-high/30";
     case "medium":
-      return "bg-amber-500/15 text-amber-400 border-amber-500/30";
+      return "bg-medium/10 text-medium border-medium/30";
     default:
-      return "bg-emerald-500/15 text-emerald-400 border-emerald-500/30";
+      return "bg-low/10 text-low border-low/30";
   }
 }

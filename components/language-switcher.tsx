@@ -23,15 +23,17 @@ export function LanguageSwitcher() {
           <Link
             key={loc}
             href={target}
-            className={`rounded-md px-2 py-1 font-medium transition ${
+            className={`rounded-md px-2 py-1.5 font-medium transition ${
               active
-                ? "bg-sky-600 text-white"
+                ? "bg-action text-on-action"
                 : "text-muted hover:text-foreground"
             }`}
+            aria-label={dict.language[loc]}
             hrefLang={loc}
             aria-current={active ? "page" : undefined}
           >
-            {loc === "en" ? dict.language.en : dict.language.de}
+            <span aria-hidden="true" className="uppercase md:hidden">{loc}</span>
+            <span aria-hidden="true" className="hidden md:inline">{dict.language[loc]}</span>
           </Link>
         );
       })}

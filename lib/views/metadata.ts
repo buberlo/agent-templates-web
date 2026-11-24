@@ -24,6 +24,12 @@ export function rootLayoutMetadata(locale: Locale): Metadata {
       title: d.meta.titleDefault,
       description: d.meta.ogDescription,
       locale: locale === "de" ? "de_DE" : "en_US",
+      images: [{
+        url: localizePath(locale, "/opengraph-image"),
+        width: 1200,
+        height: 630,
+        alt: d.meta.ogTemplateBrand,
+      }],
     },
     twitter: {
       card: "summary_large_image",

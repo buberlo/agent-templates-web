@@ -26,6 +26,11 @@ const en: Dictionary = {
     websiteRepo: "Website repo",
   },
   common: {
+    taskComplete: "Task complete",
+    taskIncomplete: "Task incomplete",
+    skipContent: "Skip to content",
+    navigation: "Main navigation",
+    resetFilters: "Clear filters",
     catalog: "Catalog",
     templates: "templates",
     template: "template",
@@ -54,6 +59,16 @@ const en: Dictionary = {
     name: "Name",
     type: "Type",
   },
+  platforms: {
+    hermes: "Hermes",
+    grokbot: "Grok Bot",
+    openclaw: "OpenClaw",
+    "claude-code": "Claude Code",
+    codex: "Codex",
+    cursor: "Cursor",
+    "generic-mcp-agents": "Generic MCP agents",
+    generic: "Generic",
+  },
   risk: {
     suffix: "risk",
     low: "low",
@@ -66,6 +81,18 @@ const en: Dictionary = {
     unknown: "Example",
   },
   home: {
+    headlineStart: "Build better agents.",
+    headlineEnd: "Start with a template.",
+    value: "Find reusable AI agent instructions with workflows, tool requirements, and safety guidance. Export the template for the agent you use.",
+    featured: "Featured templates",
+    browseDomains: "Browse by domain",
+    importHeading: "From template to agent",
+    importFind: "Pick a template",
+    importFindText: "Review the workflow, required tools, and examples for your task.",
+    importExport: "Choose your format",
+    importExportText: "Download SKILL.md for Hermes or OpenClaw, CLAUDE.md for Claude Code, AGENTS.md for Codex, or an .mdc rule for Cursor.",
+    importUse: "Add it to your agent",
+    importUseText: "Place the file in your project or copy the generic prompt into your agent instructions.",
     title: "Reusable agent instruction templates",
     introBeforeLink: "This site renders ",
     introAfterLink:
@@ -86,10 +113,12 @@ const en: Dictionary = {
     viewAllCatalog: "View all in the catalog",
   },
   catalog: {
+    empty: "There are no templates in this catalog yet.",
+    filters: "Filters",
+    searchAction: "Search",
     title: "Template catalog",
-    intro:
-      "Full-text search across titles, tags, and prompt bodies (indexed at build time).",
-    searchPlaceholder: "Full-text search (title, tags, prompt text)…",
+    intro: "Search agent instructions and narrow your results by domain, category, platform, or tag.",
+    searchPlaceholder: "Search templates, tags, or workflows…",
     searchLabel: "Search templates",
   },
   mcp: {
@@ -103,6 +132,9 @@ const en: Dictionary = {
     domainMeta: "Agent templates in the {domain} domain.",
   },
   template: {
+    onPage: "On this page",
+    mcpTools: "MCP tools",
+    copyFailed: "Could not copy. Select and copy the text manually.",
     notFound: "Template not found",
     noPromptBlock: "No fenced prompt block found.",
     sections: {

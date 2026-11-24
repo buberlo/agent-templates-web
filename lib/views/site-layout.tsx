@@ -1,13 +1,10 @@
-import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import "@/app/globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { LocaleProvider } from "@/components/locale-provider";
-import { getDictionary } from "@/lib/i18n";
-import { getRequestLocale } from "@/lib/i18n/server";
-import { rootLayoutMetadata } from "@/lib/views/metadata";
+import { getDictionary, type Locale } from "@/lib/i18n";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,17 +16,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export async function generateMetadata(): Promise<Metadata> {
-  const locale = await getRequestLocale();
-  return rootLayoutMetadata(locale);
-}
-
-export default async function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  const locale = await getRequestLocale();
+export function SiteLayout({ children, locale }: { children: React.ReactNode; locale: Locale }) {
   const dict = getDictionary(locale);
 
   return (
@@ -40,8 +27,9 @@ export default async function RootLayout({
         <ThemeProvider>
           <LocaleProvider locale={locale} dict={dict}>
             <div className="flex min-h-screen flex-col">
+              <a href="#main-content" className="button sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60]">{dict.common.skipContent}</a>
               <SiteHeader />
-              <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-10">
+              <main id="main-content" tabIndex={-1} className="site-shell min-w-0 flex-1 py-8 sm:py-12">
                 {children}
               </main>
               <SiteFooter />
