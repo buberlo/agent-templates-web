@@ -1,204 +1,122 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { CopyButton } from "@/components/copy-button";
+import { ArrowDownToLine, ArrowUpRight, Plug } from "lucide-react";
 import { ExampleKindBadge } from "@/components/example-kind-badge";
-import { ExportPanel, type ExportPanelDoc } from "@/components/export-panel";
-import { MarkdownContent } from "@/components/markdown-content";
+import { ExportPanel } from "@/components/export-panel";
+import { CodeBlock, MarkdownContent } from "@/components/markdown-content";
 import { RiskBadge } from "@/components/risk-badge";
-import {
-  githubBlobUrl,
-  PLATFORM_LABELS,
-  suggestIssueUrl,
-} from "@/lib/content/config";
+import { githubBlobUrl, PLATFORM_LABELS, suggestIssueUrl } from "@/lib/content/config";
 import { getTemplate } from "@/lib/content/loader";
 import { getDictionary, localizePath, type Locale } from "@/lib/i18n";
 import { formatSlugLabel } from "@/lib/utils";
 
-function SectionBlock({
-  title,
-  children: body,
-}: {
-  title: string;
-  children?: string;
-}) {
-  if (!body?.trim()) return null;
-  return (
-    <section className="space-y-3">
-      <h2 className="text-xl font-semibold">{title}</h2>
-      <MarkdownContent>{body}</MarkdownContent>
-    </section>
-  );
-}
-
-export function TemplatePageContent({
-  locale,
-  id,
-}: {
-  locale: Locale;
-  id: string;
-}) {
+export function TemplatePageContent({ locale, id }: { locale: Locale; id: string }) {
   const d = getDictionary(locale);
   const doc = getTemplate(id);
   if (!doc) notFound();
 
   const fm = doc.frontmatter;
-  const ghUrl = githubBlobUrl(doc.filePath);
-  const issueUrl = suggestIssueUrl(fm.id, doc.filePath);
-  const prompt = doc.sections.systemPromptText || "";
-  const s = d.template.sections;
+  const content = doc.sections;
+  const mcpTools = [...new Set(fm.required_tools
+    .filter((tool) => /\bmcp\b/i.test(tool.name) || /\bmcp\b/i.test(tool.install))
+    .map((tool) => tool.name))];
 
-  const exportDoc: ExportPanelDoc = {
-    frontmatter: fm,
-    sections: {
-      purpose: doc.sections.purpose,
-      whenToUse: doc.sections.whenToUse,
-      toolStack: doc.sections.toolStack,
-      workflow: doc.sections.workflow,
-      definitionOfDone: doc.sections.definitionOfDone,
-      security: doc.sections.security,
-      pitfalls: doc.sections.pitfalls,
-      systemPromptText: doc.sections.systemPromptText,
-    },
-    body: doc.body,
-    filePath: doc.filePath,
-  };
+  const sections = [
+    { id: "purpose", label: d.template.sections.purpose, body: content.purpose },
+    { id: "when-to-use", label: d.template.sections.whenToUse, body: content.whenToUse },
+    { id: "tool-stack", label: d.template.sections.toolStack, body: content.toolStack, extra: mcpTools.length > 0 && (
+      <div className="mb-4">
+        <h3 className="mb-2 text-sm font-semibold">{d.template.mcpTools}</h3>
+        <ul className="flex flex-wrap gap-2">
+          {mcpTools.map((tool) => <li key={tool} className="chip gap-1.5"><Plug size={14} className="shrink-0 text-accent" aria-hidden="true" />{tool}</li>)}
+        </ul>
+      </div>
+    ) },
+    { id: "system-prompt", label: d.template.sections.systemPrompt, extra: content.systemPromptText
+      ? <CodeBlock text={content.systemPromptText} label={d.template.copyPrompt} wrap />
+      : <MarkdownContent locale={locale}>{content.systemPrompt || `_${d.template.noPromptBlock}_`}</MarkdownContent> },
+    { id: "workflow", label: d.template.sections.workflow, body: content.workflow },
+    { id: "definition-of-done", label: d.template.sections.definitionOfDone, body: content.definitionOfDone },
+    { id: "security", label: d.template.sections.security, body: content.security },
+    { id: "pitfalls", label: d.template.sections.pitfalls, body: content.pitfalls },
+    { id: "examples", label: d.template.sections.examples, body: content.examplesParsed.length ? undefined : content.examples, extra: content.examplesParsed.length > 0 && (
+      <div className="space-y-4">
+        {content.examplesParsed.map((example) => {
+          const title = example.title;
+          const kind = example.kind === "unknown" && /\((?:example data|beispieldaten|synthetic)\b/i.test(title)
+            ? "synthetic"
+            : example.kind === "unknown" && /\((?:real[- ]world|real example|echtwelt)\b/i.test(title)
+              ? "real-world"
+              : example.kind;
+          return (
+            <div key={title} className="panel p-4 sm:p-5">
+              <div className="mb-3 flex flex-wrap items-center gap-2">
+                <h3 className="font-semibold">{title}</h3>
+                <ExampleKindBadge kind={kind} />
+                {example.sourceUrl && <a href={example.sourceUrl} className="text-link text-sm">{d.common.source}</a>}
+              </div>
+              <MarkdownContent locale={locale}>{example.body.replace(/^### [^\n]+\n?/, "")}</MarkdownContent>
+            </div>
+          );
+        })}
+      </div>
+    ) },
+  ].filter((section) => section.body?.trim() || section.extra);
 
   return (
-    <article className="space-y-10">
-      <header className="space-y-4">
-        <p className="text-sm text-muted">
-          <Link href={localizePath(locale, "/catalog")}>{d.common.catalog}</Link> /{" "}
-          <Link href={localizePath(locale, `/domains/${fm.domain}`)}>
-            {formatSlugLabel(fm.domain)}
-          </Link>{" "}
-          /{" "}
-          <Link href={localizePath(locale, `/domains/${fm.domain}/${fm.category}`)}>
-            {formatSlugLabel(fm.category)}
-          </Link>
+    <article className="space-y-7">
+      <header className="panel p-5 sm:p-8">
+        <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted">
+          <Link className="text-link" href={localizePath(locale, "/catalog")}>{d.common.catalog}</Link> /
+          <Link className="text-link" href={localizePath(locale, `/domains/${fm.domain}`)}>{formatSlugLabel(fm.domain)}</Link> /
+          <Link className="text-link" href={localizePath(locale, `/domains/${fm.domain}/${fm.category}`)}>{formatSlugLabel(fm.category)}</Link>
         </p>
-        <div className="flex flex-wrap items-center gap-3">
-          <h1 className="text-3xl font-bold">{fm.title}</h1>
+        <h1 className="page-title mt-4">{fm.title}</h1>
+        <p className="mt-2 font-mono text-sm text-muted [overflow-wrap:anywhere]">{fm.id}</p>
+        <div className="mt-5 flex flex-wrap items-center gap-2">
           <RiskBadge level={fm.risk_level} />
+          {fm.target_agents.map((agent) => <span className="chip" key={agent}>{PLATFORM_LABELS[agent] || agent}</span>)}
         </div>
-        <p className="font-mono text-sm text-muted">
-          {d.common.idLabel}: {fm.id}
-        </p>
-        <div className="flex flex-wrap gap-2">
-          {fm.target_agents.map((a) => (
-            <span
-              key={a}
-              className="rounded-md border border-border bg-white/5 px-2 py-0.5 text-xs"
-            >
-              {PLATFORM_LABELS[a] || a}
-            </span>
-          ))}
-        </div>
-        <div className="flex flex-wrap gap-3 text-sm">
-          <a
-            href={ghUrl}
-            className="text-sky-400 hover:underline"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            {d.common.viewOnGitHub}
-          </a>
-          <a href={issueUrl} className="text-sky-400 hover:underline">
-            {d.common.suggestImprovement}
-          </a>
+        <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 border-t pt-4 text-sm">
+          <a href="#export" className="button-primary"><ArrowDownToLine size={17} aria-hidden="true" />{d.export.heading}</a>
+          <a href={githubBlobUrl(doc.filePath)} className="text-link inline-flex items-center gap-1">{d.common.viewOnGitHub}<ArrowUpRight size={14} aria-hidden="true" /></a>
+          <a href={suggestIssueUrl(fm.id, doc.filePath)} className="text-link">{d.common.suggestImprovement}</a>
         </div>
       </header>
 
-      <div className="grid gap-6 lg:grid-cols-3">
-        <div className="space-y-2 rounded-xl border border-border bg-card/40 p-4 lg:col-span-1">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">
-            {d.common.metadata}
-          </h2>
-          <ul className="space-y-2 text-sm">
-            <li>
-              <span className="text-muted">{d.common.version}</span> {fm.version}
-            </li>
-            <li>
-              <span className="text-muted">{d.common.updated}</span> {fm.updated}
-            </li>
-            <li>
-              <span className="text-muted">{d.common.tags}</span> {fm.tags.join(", ")}
-            </li>
+      <div className="grid min-w-0 items-start gap-6 lg:grid-cols-[14rem_minmax(0,1fr)] lg:gap-10">
+        <nav aria-label={d.template.onPage} className="sticky top-24 z-20 min-w-0 border-b bg-background py-2 sm:top-14 lg:top-[4.5rem] lg:max-h-[calc(100dvh-6rem)] lg:overflow-y-auto lg:border-b-0">
+          <p className="section-kicker mb-2 hidden pl-2 lg:block">{d.template.onPage}</p>
+          <ul className="flex gap-1 overflow-x-auto p-1 lg:flex-col lg:overflow-visible">
+            {sections.map(({ id, label }) => <li key={id} className="shrink-0"><a href={`#${id}`} className="block whitespace-nowrap rounded-md px-2 py-2 text-sm text-muted transition-colors hover:bg-surface hover:text-accent lg:whitespace-normal">{label}</a></li>)}
           </ul>
-          <h3 className="pt-3 text-sm font-semibold">{d.common.inputs}</h3>
-          <ul className="list-disc pl-4 text-sm text-muted">
-            {fm.inputs.map((i) => (
-              <li key={i}>{i}</li>
-            ))}
-          </ul>
-          <h3 className="pt-3 text-sm font-semibold">{d.common.outputs}</h3>
-          <ul className="list-disc pl-4 text-sm text-muted">
-            {fm.outputs.map((o) => (
-              <li key={o}>{o}</li>
-            ))}
-          </ul>
-        </div>
+        </nav>
 
-        <div className="space-y-8 lg:col-span-2">
-          <SectionBlock title={s.purpose}>{doc.sections.purpose}</SectionBlock>
-          <SectionBlock title={s.whenToUse}>{doc.sections.whenToUse}</SectionBlock>
-          <SectionBlock title={s.toolStack}>{doc.sections.toolStack}</SectionBlock>
-
-          <section className="space-y-3">
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <h2 className="text-xl font-semibold">{s.systemPrompt}</h2>
-              {prompt ? (
-                <CopyButton text={prompt} label={d.template.copyPrompt} />
-              ) : null}
-            </div>
-            {prompt ? (
-              <pre className="overflow-x-auto rounded-xl border border-border bg-black/40 p-4 font-mono text-sm leading-relaxed whitespace-pre-wrap">
-                {prompt}
-              </pre>
-            ) : (
-              <MarkdownContent>
-                {doc.sections.systemPrompt || `_${d.template.noPromptBlock}_`}
-              </MarkdownContent>
-            )}
-          </section>
-
-          <SectionBlock title={s.workflow}>{doc.sections.workflow}</SectionBlock>
-          <SectionBlock title={s.definitionOfDone}>
-            {doc.sections.definitionOfDone}
-          </SectionBlock>
-          <SectionBlock title={s.security}>{doc.sections.security}</SectionBlock>
-          <SectionBlock title={s.pitfalls}>{doc.sections.pitfalls}</SectionBlock>
-
-          {doc.sections.examplesParsed.length > 0 && (
-            <section className="space-y-6">
-              <h2 className="text-xl font-semibold">{s.examples}</h2>
-              {doc.sections.examplesParsed.map((ex) => (
-                <div
-                  key={ex.title}
-                  className="rounded-xl border border-border bg-card/30 p-5"
-                >
-                  <div className="mb-3 flex flex-wrap items-center gap-2">
-                    <h3 className="font-semibold">{ex.title}</h3>
-                    <ExampleKindBadge kind={ex.kind} />
-                    {ex.sourceUrl ? (
-                      <a
-                        href={ex.sourceUrl}
-                        className="text-sm text-sky-400 hover:underline"
-                        rel="noopener noreferrer"
-                        target="_blank"
-                      >
-                        {d.common.source}
-                      </a>
-                    ) : null}
-                  </div>
-                  <MarkdownContent>{ex.body}</MarkdownContent>
-                </div>
+        <div className="min-w-0">
+          <section className="mb-6">
+            <h2 className="mb-3 text-lg font-semibold">{d.common.metadata}</h2>
+            <dl className="panel grid gap-4 p-4 text-sm sm:grid-cols-2 sm:p-5">
+              {[
+                { label: d.common.version, value: fm.version },
+                { label: d.common.updated, value: fm.updated },
+                { label: d.common.inputs, value: fm.inputs.join(" · ") },
+                { label: d.common.outputs, value: fm.outputs.join(" · ") },
+                { label: d.common.tags, value: fm.tags.join(" · ") },
+              ].filter(({ value }) => value).map(({ label, value }) => (
+                <div key={label} className="min-w-0 [overflow-wrap:anywhere]"><dt className="font-medium">{label}</dt><dd className="mt-1 text-muted">{value}</dd></div>
               ))}
+            </dl>
+          </section>
+          {sections.map(({ id, label, body, extra }) => (
+            <section key={id} id={id} tabIndex={-1} className="anchor-section">
+              <h2 className="section-title mb-4">{label}</h2>
+              {extra}
+              {body && <MarkdownContent locale={locale}>{body}</MarkdownContent>}
             </section>
-          )}
+          ))}
+          <ExportPanel doc={{ frontmatter: fm, sections: content, body: doc.body, filePath: doc.filePath }} />
         </div>
       </div>
-
-      <ExportPanel doc={exportDoc} />
     </article>
   );
 }

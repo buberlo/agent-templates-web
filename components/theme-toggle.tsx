@@ -17,7 +17,7 @@ export function ThemeToggle() {
   return (
     <button
       type="button"
-      className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-card text-foreground hover:bg-white/5"
+      className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-card text-foreground hover:bg-surface"
       onClick={() => setTheme(dark ? "light" : "dark")}
       aria-label={dark ? dict.theme.switchToLight : dict.theme.switchToDark}
     >

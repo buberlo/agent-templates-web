@@ -4,9 +4,9 @@ import type { ExampleKind } from "@/lib/content/sections";
 import { useLocale } from "./locale-provider";
 
 const STYLES: Record<ExampleKind, string> = {
-  synthetic: "bg-violet-500/15 text-violet-300 border-violet-500/30",
-  "real-world": "bg-cyan-500/15 text-cyan-300 border-cyan-500/30",
-  unknown: "bg-white/10 text-muted border-border",
+  synthetic: "bg-accent/10 text-accent border-accent/30",
+  "real-world": "bg-low/10 text-low border-low/30",
+  unknown: "bg-surface text-muted border-border",
 };
 
 export function ExampleKindBadge({ kind }: { kind: ExampleKind }) {

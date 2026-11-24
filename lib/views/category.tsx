@@ -38,7 +38,7 @@ export function CategoryPageContent({
           </Link>{" "}
           / {category}
         </p>
-        <h1 className="text-3xl font-bold">
+        <h1 className="page-title">
           {meta?.title || formatSlugLabel(category)}
         </h1>
         {meta?.description ? (
@@ -51,8 +51,8 @@ export function CategoryPageContent({
       </header>
 
       {meta?.raw ? (
-        <section className="rounded-xl border border-border bg-card/30 p-5">
-          <MarkdownContent>{meta.raw.slice(0, 12000)}</MarkdownContent>
+        <section className="panel p-5">
+          <MarkdownContent locale={locale}>{meta.raw.slice(0, 12000)}</MarkdownContent>
         </section>
       ) : null}
 

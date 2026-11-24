@@ -1,7 +1,9 @@
 "use client";
 
 import Index from "flexsearch";
-import { useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { Search, SearchX } from "lucide-react";
 import { TemplateCard, type TemplateCardData } from "./template-card";
 import { formatSlugLabel } from "@/lib/utils";
 import { PLATFORM_LABELS } from "@/lib/content/constants";
@@ -9,6 +11,13 @@ import { formatMessage } from "@/lib/i18n/format";
 import { useLocale } from "./locale-provider";
 
 export type CatalogSearchItem = TemplateCardData & { searchText: string };
+
+function InitialQuery({ onQuery }: { onQuery: (query: string) => void }) {
+  const params = useSearchParams();
+  const query = params.get("q") ?? "";
+  useEffect(() => onQuery(query), [onQuery, query]);
+  return null;
+}
 
 const RISK_LEVELS = ["low", "medium", "high"] as const;
 
@@ -35,10 +44,9 @@ export function CatalogSearch({ items }: { items: CatalogSearchItem[] }) {
   const [tag, setTag] = useState("");
 
   const categories = useMemo(() => {
-    if (!domain) return [];
     return [
       ...new Set(
-        items.filter((i) => i.domain === domain).map((i) => i.category),
+        items.filter((i) => !domain || i.domain === domain).map((i) => i.category),
       ),
     ].sort();
   }, [domain, items]);
@@ -48,7 +56,6 @@ export function CatalogSearch({ items }: { items: CatalogSearchItem[] }) {
       document: {
         id: "id",
         index: ["title", "searchText", "tags"],
-        store: true,
       },
       tokenize: "forward",
       cache: true,
@@ -66,18 +73,12 @@ export function CatalogSearch({ items }: { items: CatalogSearchItem[] }) {
   const filtered = useMemo(() => {
     let matchIds: Set<string> | null = null;
     if (query.trim()) {
-      const res = index.search(query.trim(), { enrich: true }) as unknown as {
-        result: Array<string | number | { id?: string | number }>;
+      const res = index.search(query.trim(), { limit: items.length }) as unknown as {
+        result: Array<string | number>;
       }[];
       matchIds = new Set<string>();
       for (const group of res) {
-        for (const hit of group.result) {
-          if (hit && typeof hit === "object" && "id" in hit) {
-            matchIds.add(String(hit.id));
-          } else {
-            matchIds.add(String(hit));
-          }
-        }
+        for (const id of group.result) matchIds.add(String(id));
       }
     }
 
@@ -92,21 +93,41 @@ export function CatalogSearch({ items }: { items: CatalogSearchItem[] }) {
     });
   }, [agent, category, domain, index, items, query, risk, tag]);
 
+  const hasFilters = Boolean(query || domain || category || agent || risk || tag);
+
+  function resetFilters() {
+    setQuery("");
+    setDomain("");
+    setCategory("");
+    setAgent("");
+    setRisk("");
+    setTag("");
+    const url = new URL(window.location.href);
+    url.searchParams.delete("q");
+    window.history.replaceState(null, "", url);
+    document.getElementById("catalog-q")?.focus();
+  }
+
   return (
     <div className="space-y-6">
-      <div className="rounded-xl border border-border bg-card/50 p-4">
-        <label htmlFor="catalog-q" className="sr-only">
-          {dict.catalog.searchLabel}
-        </label>
-        <input
-          id="catalog-q"
-          type="search"
-          placeholder={dict.catalog.searchPlaceholder}
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          className="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm outline-none ring-sky-500/30 focus:ring-2"
-        />
-        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+      <Suspense><InitialQuery onQuery={setQuery} /></Suspense>
+      <div className="panel p-4 sm:p-5">
+        <div className="relative">
+          <Search size={19} className="pointer-events-none absolute left-3 top-3 text-muted" aria-hidden="true" />
+          <label htmlFor="catalog-q" className="sr-only">
+            {dict.catalog.searchLabel}
+          </label>
+          <input
+            id="catalog-q"
+            type="search"
+            placeholder={dict.catalog.searchPlaceholder}
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="field w-full pl-10"
+          />
+        </div>
+        <fieldset className="mt-4 grid min-w-0 grid-cols-2 gap-2 lg:grid-cols-5">
+          <legend className="mb-2 text-sm font-semibold">{dict.catalog.filters}</legend>
           <select
             aria-label={dict.common.allDomains}
             value={domain}
@@ -114,7 +135,7 @@ export function CatalogSearch({ items }: { items: CatalogSearchItem[] }) {
               setDomain(e.target.value);
               setCategory("");
             }}
-            className="rounded-lg border border-border bg-background px-3 py-2 text-sm"
+            className="field"
           >
             <option value="">{dict.common.allDomains}</option>
             {domains.map((d) => (
@@ -126,9 +147,8 @@ export function CatalogSearch({ items }: { items: CatalogSearchItem[] }) {
           <select
             aria-label={dict.common.allCategories}
             value={category}
-            disabled={!domain}
             onChange={(e) => setCategory(e.target.value)}
-            className="rounded-lg border border-border bg-background px-3 py-2 text-sm disabled:opacity-50"
+            className="field"
           >
             <option value="">{dict.common.allCategories}</option>
             {categories.map((c) => (
@@ -141,7 +161,7 @@ export function CatalogSearch({ items }: { items: CatalogSearchItem[] }) {
             aria-label={dict.common.allAgents}
             value={agent}
             onChange={(e) => setAgent(e.target.value)}
-            className="rounded-lg border border-border bg-background px-3 py-2 text-sm"
+            className="field"
           >
             <option value="">{dict.common.allAgents}</option>
             {agents.map((a) => (
@@ -154,7 +174,7 @@ export function CatalogSearch({ items }: { items: CatalogSearchItem[] }) {
             aria-label={dict.common.allRisk}
             value={risk}
             onChange={(e) => setRisk(e.target.value)}
-            className="rounded-lg border border-border bg-background px-3 py-2 text-sm"
+            className="field"
           >
             <option value="">{dict.common.allRisk}</option>
             {RISK_LEVELS.map((r) => (
@@ -171,32 +191,36 @@ export function CatalogSearch({ items }: { items: CatalogSearchItem[] }) {
             aria-label={dict.common.allTags}
             value={tag}
             onChange={(e) => setTag(e.target.value)}
-            className="rounded-lg border border-border bg-background px-3 py-2 text-sm"
+            className="field"
           >
             <option value="">{dict.common.allTags}</option>
-            {allTags.slice(0, 200).map((t) => (
+            {allTags.map((t) => (
               <option key={t} value={t}>
                 {t}
               </option>
             ))}
           </select>
-        </div>
-        <p className="mt-3 text-sm text-muted">
+        </fieldset>
+      </div>
+      <div className="flex min-h-11 flex-wrap items-center justify-between gap-3">
+        <p role="status" className="text-sm text-muted">
           {formatMessage(dict.common.showingCount, {
             shown: filtered.length,
             total: items.length,
           })}
         </p>
+        {hasFilters && <button type="button" className="button" onClick={resetFilters}>{dict.common.resetFilters}</button>}
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {filtered.map((t) => (
-          <TemplateCard key={t.id} template={t} />
-        ))}
-      </div>
-
-      {filtered.length === 0 && (
-        <p className="text-center text-muted">{dict.common.noTemplatesMatch}</p>
+      {filtered.length ? (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {filtered.map((template) => <TemplateCard key={template.id} template={template} />)}
+        </div>
+      ) : (
+        <div className="panel grid justify-items-center gap-3 p-10 text-center">
+          <SearchX size={28} className="text-accent" aria-hidden="true" />
+          <p className="font-semibold">{items.length ? dict.common.noTemplatesMatch : dict.catalog.empty}</p>
+        </div>
       )}
     </div>
   );

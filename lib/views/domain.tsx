@@ -39,7 +39,7 @@ export function DomainPageContent({
           </Link>{" "}
           / {domain}
         </p>
-        <h1 className="text-3xl font-bold">
+        <h1 className="page-title">
           {meta?.title || formatSlugLabel(domain)}
         </h1>
         <p className="text-muted">
@@ -51,8 +51,8 @@ export function DomainPageContent({
       </header>
 
       {meta?.raw ? (
-        <section className="rounded-xl border border-border bg-card/30 p-5">
-          <MarkdownContent>{meta.raw}</MarkdownContent>
+        <section className="panel p-5">
+          <MarkdownContent locale={locale}>{meta.raw}</MarkdownContent>
         </section>
       ) : null}
 
