@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ArrowUpRight, FileCode2 } from "lucide-react";
-import { PLATFORM_LABELS } from "@/lib/content/constants";
+import { agentLabel } from "@/lib/content/agents";
 import { formatSlugLabel } from "@/lib/utils";
 import { RiskBadge } from "./risk-badge";
 import { useLocale } from "./locale-provider";
@@ -39,7 +39,7 @@ export function TemplateCard({ template }: { template: TemplateCardData }) {
       {template.target_agents.length > 0 && (
         <ul aria-label={dict.common.allAgents} className="mt-auto flex flex-wrap gap-1.5 border-t pt-3">
           {template.target_agents.slice(0, 3).map((agent) => (
-            <li key={agent} className="chip">{PLATFORM_LABELS[agent] || agent}</li>
+            <li key={agent} className="chip">{agentLabel(agent, dict.platforms)}</li>
           ))}
         </ul>
       )}

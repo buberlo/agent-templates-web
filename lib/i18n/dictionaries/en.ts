@@ -59,6 +59,16 @@ const en: Dictionary = {
     name: "Name",
     type: "Type",
   },
+  platforms: {
+    hermes: "Hermes",
+    grokbot: "Grok Bot",
+    openclaw: "OpenClaw",
+    "claude-code": "Claude Code",
+    codex: "Codex",
+    cursor: "Cursor",
+    "generic-mcp-agents": "Generic MCP agents",
+    generic: "Generic",
+  },
   risk: {
     suffix: "risk",
     low: "low",

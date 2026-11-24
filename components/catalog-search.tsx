@@ -6,29 +6,87 @@ import { useSearchParams } from "next/navigation";
 import { Search, SearchX } from "lucide-react";
 import { TemplateCard, type TemplateCardData } from "./template-card";
 import { formatSlugLabel } from "@/lib/utils";
-import { PLATFORM_LABELS } from "@/lib/content/constants";
+import {
+  agentFromParam,
+  agentLabel,
+  agentToParam,
+  templateSupportsAgent,
+  uniqueAgentIds,
+} from "@/lib/content/agents";
 import { formatMessage } from "@/lib/i18n/format";
 import { useLocale } from "./locale-provider";
 
 export type CatalogSearchItem = TemplateCardData & { searchText: string };
 
-function InitialQuery({ onQuery }: { onQuery: (query: string) => void }) {
-  const params = useSearchParams();
-  const query = params.get("q") ?? "";
-  useEffect(() => onQuery(query), [onQuery, query]);
-  return null;
-}
-
 const RISK_LEVELS = ["low", "medium", "high"] as const;
 
-export function CatalogSearch({ items }: { items: CatalogSearchItem[] }) {
+type FilterState = {
+  query: string;
+  domain: string;
+  category: string;
+  agent: string;
+  risk: string;
+  tag: string;
+};
+
+const EMPTY_FILTERS: FilterState = {
+  query: "",
+  domain: "",
+  category: "",
+  agent: "",
+  risk: "",
+  tag: "",
+};
+
+function readFiltersFromParams(params: URLSearchParams): FilterState {
+  return {
+    query: params.get("q") ?? "",
+    domain: params.get("domain") ?? "",
+    category: params.get("category") ?? "",
+    agent: agentFromParam(params.get("agent") ?? ""),
+    risk: params.get("risk") ?? "",
+    tag: params.get("tag") ?? "",
+  };
+}
+
+function writeFiltersToUrl(filters: FilterState) {
+  const url = new URL(window.location.href);
+  const next = new URLSearchParams(url.searchParams);
+  const entries: Array<[string, string]> = [
+    ["q", filters.query.trim()],
+    ["domain", filters.domain],
+    ["category", filters.category],
+    ["agent", filters.agent ? agentToParam(filters.agent) : ""],
+    ["risk", filters.risk],
+    ["tag", filters.tag],
+  ];
+  for (const [key, value] of entries) {
+    if (value) next.set(key, value);
+    else next.delete(key);
+  }
+  const search = next.toString();
+  const nextUrl = url.pathname + (search ? `?${search}` : "");
+  if (nextUrl !== url.pathname + url.search) {
+    window.history.replaceState(null, "", nextUrl);
+  }
+}
+
+function CatalogSearchFields({
+  items,
+  initial,
+  syncUrl = true,
+}: {
+  items: CatalogSearchItem[];
+  initial: FilterState;
+  syncUrl?: boolean;
+}) {
   const { dict } = useLocale();
   const domains = useMemo(
     () => [...new Set(items.map((i) => i.domain))].sort(),
     [items],
   );
   const agents = useMemo(
-    () => [...new Set(items.flatMap((i) => i.target_agents))].sort(),
+    () => uniqueAgentIds(items.flatMap((i) => i.target_agents)),
     [items],
   );
   const allTags = useMemo(
@@ -36,12 +94,17 @@ export function CatalogSearch({ items }: { items: CatalogSearchItem[] }) {
     [items],
   );
 
-  const [query, setQuery] = useState("");
-  const [domain, setDomain] = useState("");
-  const [category, setCategory] = useState("");
-  const [agent, setAgent] = useState("");
-  const [risk, setRisk] = useState("");
-  const [tag, setTag] = useState("");
+  const [query, setQuery] = useState(initial.query);
+  const [domain, setDomain] = useState(initial.domain);
+  const [category, setCategory] = useState(initial.category);
+  const [agent, setAgent] = useState(initial.agent);
+  const [risk, setRisk] = useState(initial.risk);
+  const [tag, setTag] = useState(initial.tag);
+
+  useEffect(() => {
+    if (!syncUrl) return;
+    writeFiltersToUrl({ query, domain, category, agent, risk, tag });
+  }, [syncUrl, query, domain, category, agent, risk, tag]);
 
   const categories = useMemo(() => {
     return [
@@ -86,7 +149,7 @@ export function CatalogSearch({ items }: { items: CatalogSearchItem[] }) {
       if (matchIds && !matchIds.has(item.id)) return false;
       if (domain && item.domain !== domain) return false;
       if (category && item.category !== category) return false;
-      if (agent && !item.target_agents.includes(agent)) return false;
+      if (agent && !templateSupportsAgent(item.target_agents, agent)) return false;
       if (risk && item.risk_level !== risk) return false;
       if (tag && !item.tags.includes(tag)) return false;
       return true;
@@ -102,15 +165,12 @@ export function CatalogSearch({ items }: { items: CatalogSearchItem[] }) {
     setAgent("");
     setRisk("");
     setTag("");
-    const url = new URL(window.location.href);
-    url.searchParams.delete("q");
-    window.history.replaceState(null, "", url);
+    writeFiltersToUrl(EMPTY_FILTERS);
     document.getElementById("catalog-q")?.focus();
   }
 
   return (
     <div className="space-y-6">
-      <Suspense><InitialQuery onQuery={setQuery} /></Suspense>
       <div className="panel p-4 sm:p-5">
         <div className="relative">
           <Search size={19} className="pointer-events-none absolute left-3 top-3 text-muted" aria-hidden="true" />
@@ -166,7 +226,7 @@ export function CatalogSearch({ items }: { items: CatalogSearchItem[] }) {
             <option value="">{dict.common.allAgents}</option>
             {agents.map((a) => (
               <option key={a} value={a}>
-                {PLATFORM_LABELS[a] || a}
+                {agentLabel(a, dict.platforms)}
               </option>
             ))}
           </select>
@@ -223,5 +283,22 @@ export function CatalogSearch({ items }: { items: CatalogSearchItem[] }) {
         </div>
       )}
     </div>
+  );
+}
+
+function CatalogSearchFromUrl({ items }: { items: CatalogSearchItem[] }) {
+  const params = useSearchParams();
+  const initial = useMemo(
+    () => readFiltersFromParams(new URLSearchParams(params.toString())),
+    [params],
+  );
+  return <CatalogSearchFields items={items} initial={initial} />;
+}
+
+export function CatalogSearch({ items }: { items: CatalogSearchItem[] }) {
+  return (
+    <Suspense fallback={<CatalogSearchFields items={items} initial={EMPTY_FILTERS} syncUrl={false} />}>
+      <CatalogSearchFromUrl items={items} />
+    </Suspense>
   );
 }

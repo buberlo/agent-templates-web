@@ -60,6 +60,16 @@ export type Dictionary = {
     name: string;
     type: string;
   };
+  platforms: {
+    hermes: string;
+    grokbot: string;
+    openclaw: string;
+    "claude-code": string;
+    codex: string;
+    cursor: string;
+    "generic-mcp-agents": string;
+    generic: string;
+  };
   risk: {
     suffix: string;
     low: string;
