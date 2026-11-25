@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { curatedPacks } from "@/lib/content/packs";
 import { getAllTemplates, getCatalog } from "@/lib/content/loader";
 import { localizePath, LOCALES } from "@/lib/i18n";
 import { siteMetadataBase } from "@/lib/i18n";
@@ -34,6 +35,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
   pushBoth(routes, "/catalog", now);
   pushBoth(routes, "/mcp", now);
   pushBoth(routes, "/how-it-works", now);
+  pushBoth(routes, "/packs", now);
+
+  for (const { slug } of curatedPacks) {
+    pushBoth(routes, `/packs/${slug}`, now);
+  }
 
   for (const d of catalog.domains) {
     pushBoth(routes, `/domains/${d.slug}`, now);

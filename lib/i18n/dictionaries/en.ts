@@ -6,6 +6,7 @@ const en: Dictionary = {
     phaseBadge: "Phase 1 · Public catalog",
   },
   nav: {
+    packs: "Packs",
     catalog: "Catalog",
     mcp: "MCP servers",
     contentRepo: "Content repo",
@@ -168,6 +169,51 @@ const en: Dictionary = {
       "Copy the generic prompt.",
       "Paste it into your agent’s instructions.",
     ],
+  },
+  packs: {
+    title: "Curated Packs",
+    intro: "Explore free starter collections of agent templates organized around common workflows.",
+    browse: "Browse packs",
+    domains: "Domains",
+    includedTemplates: "Included templates",
+    install: "Install with the CLI",
+    installIntro: "Run in your project directory to save each template as a separate portable prompt file.",
+    templateCount: "{count} templates",
+    toolCount: "{count} MCP tool configurations",
+    entries: {
+      "developer-code-review": {
+        title: "Developer & Code Review Stack",
+        description: "Implement changes, review diffs, run tests, refactor code, and update developer documentation.",
+      },
+      "devops-cloud-operations": {
+        title: "DevOps & Cloud Operations",
+        description: "Build CI pipelines and containers, troubleshoot Kubernetes rollouts, and work through production incidents.",
+      },
+      "research-grounded-knowledge": {
+        title: "Research & Grounded Knowledge",
+        description: "Gather web and academic sources, track references in Zotero, and turn cited findings into internal documentation.",
+      },
+      "security-compliance-baseline": {
+        title: "Security & Compliance Baseline",
+        description: "Establish a patch and recovery baseline, review email authentication reports, and organize privacy compliance work.",
+      },
+      "ai-ops-mcp-builder": {
+        title: "AI Ops & MCP Builder Kit",
+        description: "Build an MCP server, author reusable skills, manage context, and evaluate how models are routed.",
+      },
+      "office-document-automation": {
+        title: "Office & Document Automation",
+        description: "Extract text from scans, prepare Word documents, check spreadsheets, create presentations, and publish PDFs.",
+      },
+      "content-growth-operations": {
+        title: "Content & Growth Operations",
+        description: "Plan content, draft copy, audit on-page SEO, and prepare newsletter and social campaigns.",
+      },
+      "support-crm-operations": {
+        title: "Support & CRM Operations",
+        description: "Triage tickets, draft replies, escalate issues, flag help center gaps, track customer satisfaction, and maintain CRM records.",
+      },
+    },
   },
   catalog: {
     empty: "There are no templates in this catalog yet.",

@@ -112,6 +112,7 @@ export function buildLlmsTxt(
     "## Key resources",
     "",
     listLink("Template catalog", `${siteUrl}/catalog`, "Browse and search templates."),
+    listLink("Curated Packs", `${siteUrl}/packs`, "Browse free template collections for common workflows."),
     listLink("MCP catalog", `${siteUrl}/mcp`, "Browse MCP servers and their usage notes."),
     listLink("How it works", `${siteUrl}/how-it-works`, "Read the template setup guide."),
     listLink("Template index JSON", `${siteUrl}/api/templates.json`, "Lists templates and their detail URLs."),

@@ -100,6 +100,16 @@ export function HomePageContent({ locale }: { locale: Locale }) {
         </section>
       )}
 
+      <section className="panel flex flex-wrap items-center justify-between gap-4 p-5 sm:p-8">
+        <div>
+          <h2 className="section-title">{d.packs.title}</h2>
+          <p className="mt-3 max-w-prose text-muted">{d.packs.intro}</p>
+        </div>
+        <Link href={localizePath(locale, "/packs")} className="button">
+          {d.packs.browse} <ArrowRight size={16} aria-hidden="true" />
+        </Link>
+      </section>
+
       <section className="panel grid gap-6 bg-surface p-5 sm:p-8 lg:grid-cols-[1fr_2.5fr]">
         <div>
           <h2 className="section-title">{d.howItWorks.title}</h2>
