@@ -214,6 +214,16 @@ export type Dictionary = {
     empty: string;
     templateHeading: string;
   };
+  embed: {
+    heading: string;
+    intro: string;
+    markdown: string;
+    html: string;
+    copyMarkdown: string;
+    copyHtml: string;
+    altWorksWith: string;
+    altQuality: string;
+  };
   template: {
     onPage: string;
     mcpTools: string;

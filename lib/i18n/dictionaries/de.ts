@@ -309,6 +309,16 @@ const de: Dictionary = {
     empty: "Für diesen Build ist keine Git-Historie im Content-Cache verfügbar.",
     templateHeading: "Vorlagen-Changelog",
   },
+  embed: {
+    heading: "Einbettbare Badges",
+    intro: "Statische SVG-Badges ohne Tracking. Markdown oder HTML für README und Dokumentation kopieren.",
+    markdown: "Markdown",
+    html: "HTML",
+    copyMarkdown: "Markdown kopieren",
+    copyHtml: "HTML kopieren",
+    altWorksWith: "Works with AgentStencil",
+    altQuality: "AgentStencil Qualitätswert",
+  },
   template: {
     onPage: "Auf dieser Seite",
     mcpTools: "MCP-Werkzeuge",

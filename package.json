@@ -11,7 +11,7 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "test": "tsx --test lib/content/*.test.ts lib/export/*.test.ts",
+    "test": "tsx --test lib/content/*.test.ts lib/export/*.test.ts lib/badges/*.test.ts",
     "cli:build": "tsc -p packages/cli/tsconfig.json && esbuild packages/cli/src/index.ts --tsconfig=packages/cli/tsconfig.json --bundle --platform=node --target=node20 --external:gray-matter --banner:js='#!/usr/bin/env node' --outfile=packages/cli/dist/index.js && node -e \"require('node:fs').chmodSync('packages/cli/dist/index.js', 0o755)\"",
     "cli:test": "tsx --test packages/cli/test/*.test.ts"
   },

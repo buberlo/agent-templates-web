@@ -4,6 +4,7 @@ import { ArrowDownToLine, ArrowUpRight, Plug } from "lucide-react";
 import { CopyButton } from "@/components/copy-button";
 import { ExampleKindBadge } from "@/components/example-kind-badge";
 import { McpConfigGenerator } from "@/components/mcp-config-generator";
+import { EmbedBadges } from "@/components/embed-badges";
 import { ExportPanel } from "@/components/export-panel";
 import { CodeBlock, MarkdownContent } from "@/components/markdown-content";
 import { QualityBadge } from "@/components/quality-badge";
@@ -180,6 +181,7 @@ export function TemplatePageContent({ locale, id }: { locale: Locale; id: string
               {body && <MarkdownContent locale={locale}>{body}</MarkdownContent>}
             </section>
           ))}
+          <EmbedBadges id={fm.id} title={fm.title} />
           <ExportPanel doc={{ frontmatter: fm, sections: content, body: doc.body, filePath: doc.filePath }} />
         </div>
       </div>
