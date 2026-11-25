@@ -4,6 +4,8 @@ import Link from "next/link";
 import { ArrowUpRight, FileCode2 } from "lucide-react";
 import { agentLabel } from "@/lib/content/agents";
 import { formatSlugLabel } from "@/lib/utils";
+import type { QualityLevel } from "@/lib/content/quality-score";
+import { QualityBadge } from "./quality-badge";
 import { RiskBadge } from "./risk-badge";
 import { useLocale } from "./locale-provider";
 
@@ -15,6 +17,7 @@ export interface TemplateCardData {
   tags: string[];
   target_agents: string[];
   risk_level: string;
+  qualityLevel: QualityLevel;
 }
 
 export function TemplateCard({ template }: { template: TemplateCardData }) {
@@ -26,7 +29,10 @@ export function TemplateCard({ template }: { template: TemplateCardData }) {
         <span className="grid size-10 place-items-center rounded-lg bg-surface text-accent">
           <FileCode2 size={19} aria-hidden="true" />
         </span>
-        <RiskBadge level={template.risk_level} />
+        <div className="flex flex-wrap justify-end gap-1.5">
+          <RiskBadge level={template.risk_level} />
+          <QualityBadge level={template.qualityLevel} />
+        </div>
       </div>
       <p className="mb-1 text-xs font-medium text-muted">{formatSlugLabel(template.domain)} / {formatSlugLabel(template.category)}</p>
       <h3 className="text-lg font-semibold leading-snug tracking-tight">

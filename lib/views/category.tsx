@@ -5,6 +5,7 @@ import { MarkdownContent } from "@/components/markdown-content";
 import {
   getCatalog,
   getCategoryMeta,
+  getTemplateQuality,
   getTemplatesByCategory,
 } from "@/lib/content/loader";
 import { getDictionary, localizePath, type Locale } from "@/lib/i18n";
@@ -58,7 +59,7 @@ export function CategoryPageContent({
 
       <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {templates.map((t) => (
-          <TemplateCard key={t.frontmatter.id} template={t.frontmatter} />
+          <TemplateCard key={t.frontmatter.id} template={{ ...t.frontmatter, qualityLevel: getTemplateQuality(t).level }} />
         ))}
       </section>
     </div>

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowDownToLine, ArrowRight, Boxes, Braces, Command, Database, FileCode2, Layers, Search, Terminal, Workflow } from "lucide-react";
 import { TemplateCard } from "@/components/template-card";
-import { getCatalog } from "@/lib/content/loader";
+import { getCatalog, getTemplate, getTemplateQuality } from "@/lib/content/loader";
 import { getDictionary, localizePath, type Locale } from "@/lib/i18n";
 import { formatSlugLabel } from "@/lib/utils";
 
@@ -29,6 +29,11 @@ export function HomePageContent({ locale }: { locale: Locale }) {
     return template ? [template] : [];
   });
   const extraTemplates = catalog.templates.filter((item) => !featured.includes(item));
+
+  const featuredDocs = [...featured, ...extraTemplates].flatMap(({ id }) => {
+    const doc = getTemplate(id);
+    return doc ? [doc] : [];
+  }).slice(0, 3);
 
   return (
     <div className="space-y-[var(--section-space)]">
@@ -95,7 +100,7 @@ export function HomePageContent({ locale }: { locale: Locale }) {
             </Link>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {[...featured, ...extraTemplates].slice(0, 3).map((template) => <TemplateCard key={template.id} template={template} />)}
+            {featuredDocs.map((doc) => <TemplateCard key={doc.frontmatter.id} template={{ ...doc.frontmatter, qualityLevel: getTemplateQuality(doc).level }} />)}
           </div>
         </section>
       )}
