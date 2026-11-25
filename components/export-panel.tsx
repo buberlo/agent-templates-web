@@ -4,7 +4,7 @@ import {
   EXPORT_TARGETS,
   type ExportTarget,
 } from "@/lib/content/constants";
-import { exportTemplate } from "@/lib/export";
+import { allExportFiles, exportTemplate } from "@/lib/export";
 import type { TemplateFrontmatter } from "@/lib/content/types";
 import type { ParsedSections } from "@/lib/content/sections";
 import { useMemo, useState } from "react";
@@ -44,12 +44,14 @@ export function ExportPanel({ doc }: { doc: ExportPanelDoc }) {
 
   const description = dict.export.descriptions[target];
 
-  function download() {
-    const blob = new Blob([result.content], { type: result.mimeType });
+  const files = useMemo(() => allExportFiles(result), [result]);
+
+  function download(file: (typeof files)[number]) {
+    const blob = new Blob([file.content], { type: file.mimeType });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = result.filename.split("/").pop() ?? result.filename;
+    a.download = file.filename.split("/").pop() ?? file.filename;
     a.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
@@ -79,10 +81,17 @@ export function ExportPanel({ doc }: { doc: ExportPanelDoc }) {
       </fieldset>
       <p className="mt-4 text-sm text-muted">{description}</p>
       <div className="mt-4 flex flex-wrap gap-2">
-        <button type="button" onClick={download} className="button-primary min-w-0 text-left [overflow-wrap:anywhere]">
-          <Download size={17} className="shrink-0" aria-hidden="true" />
-          <span>{dict.export.download} {result.filename}</span>
-        </button>
+        {files.map((file) => (
+          <button
+            key={file.filename}
+            type="button"
+            onClick={() => download(file)}
+            className="button-primary min-w-0 text-left [overflow-wrap:anywhere]"
+          >
+            <Download size={17} className="shrink-0" aria-hidden="true" />
+            <span>{dict.export.download} {file.filename}</span>
+          </button>
+        ))}
         <CopyButton key={target} text={result.content} label={dict.export.copyExport} />
       </div>
       <pre tabIndex={0} className="mt-4 max-h-64 overflow-auto rounded-lg border bg-surface p-4 font-mono text-xs">

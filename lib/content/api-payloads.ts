@@ -72,8 +72,21 @@ export function buildTemplateDetailJson(
     examples_markdown: sections.examples ?? "",
     resolved_mcp_tools: resolveMcpTools(frontmatter.required_tools, mcpCatalog),
     exports: EXPORT_TARGETS.map((target) => {
-      const { filename, mimeType, description } = exportTemplate(doc, target);
-      return { target, filename, mime_type: mimeType, description };
+      const { filename, mimeType, description, extraFiles } = exportTemplate(doc, target);
+      return {
+        target,
+        filename,
+        mime_type: mimeType,
+        description,
+        ...(extraFiles?.length
+          ? {
+              extra_files: extraFiles.map((f) => ({
+                filename: f.filename,
+                mime_type: f.mimeType,
+              })),
+            }
+          : {}),
+      };
     }),
     source_url: sourceUrl,
   };

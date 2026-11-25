@@ -59,6 +59,15 @@ export function howItWorksMetadata(locale: Locale): Metadata {
   };
 }
 
+export function agentSupportMetadata(locale: Locale): Metadata {
+  const { agentSupport } = getDictionary(locale);
+  return {
+    title: agentSupport.title,
+    description: agentSupport.intro,
+    alternates: languageAlternates("/agent-support", locale),
+  };
+}
+
 export function packsMetadata(locale: Locale): Metadata {
   const { packs } = getDictionary(locale);
   return {

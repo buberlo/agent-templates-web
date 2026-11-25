@@ -1,30 +1,11 @@
 import { EXPORT_TARGETS, type ExportTarget } from "@/lib/content/constants";
 import type { TemplateDocument } from "@/lib/content/types";
+import { EXTENDED_EXPORT_MAP } from "./extended-targets";
+import { section } from "./shared";
+import type { ExportResult } from "./types";
 
-export interface ExportResult {
-  filename: string;
-  mimeType: string;
-  content: string;
-  description: string;
-}
-
-type SectionTextKey =
-  | "purpose"
-  | "whenToUse"
-  | "toolStack"
-  | "workflow"
-  | "definitionOfDone"
-  | "security"
-  | "pitfalls";
-
-function section(
-  doc: TemplateDocument,
-  key: SectionTextKey,
-  fallback = "",
-): string {
-  const v = doc.sections[key];
-  return typeof v === "string" ? v.trim() : fallback;
-}
+export type { ExportExtraFile, ExportResult } from "./types";
+export { allExportFiles } from "./types";
 
 function skillMarkdown(doc: TemplateDocument): string {
   const fm = doc.frontmatter;
@@ -256,6 +237,7 @@ const EXPORT_MAP: Record<
     content: genericPrompt(doc),
     description: "Portable ROLE/TOOLS/WORKFLOW prompt block",
   }),
+  ...EXTENDED_EXPORT_MAP,
 };
 
 export function exportTemplate(

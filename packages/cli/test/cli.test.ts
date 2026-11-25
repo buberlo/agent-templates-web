@@ -107,6 +107,9 @@ const instructionPaths = [
   `${id}-grok-bot.txt`, `${id}-SKILL.md`, `${id}-SKILL.md`, "CLAUDE.md", "AGENTS.md",
   `.cursor/rules/${id}.mdc`, `${id}-system-prompt.txt`, ".windsurfrules", "GEMINI.md",
   ".github/copilot-instructions.md", ".clinerules", `.kiro/steering/${id}.md`,
+  `.roo/rules/${id}.md`, `.continue/rules/${id}.md`, ".goosehints", ".aider.conf.yml", ".rules",
+  `agentstencil_${id.replace(/-/g, "_")}.py`, `agentstencil-${id}.ts`,
+  `crewai/${id}/agents.yaml`, `${id}-workflow.json`, `${id.replace(/-/g, "_")}_graph.py`,
 ];
 
 for (const [index, target] of EXPORT_TARGETS.entries()) {
@@ -114,11 +117,15 @@ for (const [index, target] of EXPORT_TARGETS.entries()) {
     const { cwd, run } = fixture(t);
     const args = ["add", id, "--target", target];
     const relative = instructionPaths[index];
-    const output = exportTemplate(parseTemplateRaw(raw, entry.path)!, target).content;
+    const exported = exportTemplate(parseTemplateRaw(raw, entry.path)!, target);
     const print = run([...args, "--stdout"]);
     assert.equal(print.status, 0, print.stderr);
-    assert.equal(print.stdout, output);
-    assert.equal(print.stderr, "");
+    assert.equal(print.stdout, exported.content);
+    if (exported.extraFiles?.length) {
+      assert.match(print.stderr, /also generates/);
+    } else {
+      assert.equal(print.stderr, "");
+    }
     const preview = run([...args, "--dry-run"]);
     assert.equal(preview.status, 0, preview.stderr);
     assert.ok(preview.stdout.includes(`Would write: ${relative}`));
@@ -126,7 +133,11 @@ for (const [index, target] of EXPORT_TARGETS.entries()) {
     const write = run(args);
     assert.equal(write.status, 0, write.stderr);
     assert.ok(write.stdout.includes(`Wrote: ${relative}`));
-    assert.equal(fs.readFileSync(path.join(cwd, relative), "utf8"), output);
+    assert.equal(fs.readFileSync(path.join(cwd, relative), "utf8"), exported.content);
+    for (const extra of exported.extraFiles ?? []) {
+      assert.ok(write.stdout.includes(`Wrote: ${extra.filename}`));
+      assert.equal(fs.readFileSync(path.join(cwd, extra.filename), "utf8"), extra.content);
+    }
   });
 }
 

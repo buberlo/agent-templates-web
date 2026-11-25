@@ -9,7 +9,10 @@ export function validateId(id: string): void {
 }
 
 export function instructionPath(target: ExportTarget, filename: string): string {
-  return target === "cursor" ? `.cursor/rules/${filename}` : filename;
+  if (target === "cursor" && !filename.includes("/")) {
+    return `.cursor/rules/${filename}`;
+  }
+  return filename;
 }
 
 function statIfPresent(file: string): fs.Stats | undefined {
