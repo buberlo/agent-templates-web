@@ -69,12 +69,18 @@ Template bodies from the content repo stay in their source language (currently m
 
 Every template has a copyable Grok Bot setup message. Content authors can add the optional `grokbot_template_url` frontmatter field to enable **Add to Grok Bot**. Use the official published template link on HTTPS at `x.ai` or a subdomain of `x.ai`. The site uses supplied links and will never fabricate them. See [Grok Bot templates](docs/grok-bot-templates.md) for the publishing steps.
 
+## Command-line interface
+
+Run `npx agentstencil list` to find a template ID, then run
+`npx agentstencil add <id> --target codex --dry-run` to preview its destination.
+See the [CLI usage guide](packages/cli/README.md) for search, export targets, and MCP configuration.
+
 ## Architecture
 
 - **`scripts/fetch-content.mjs`** — shallow clone of the content repository.
 - **`lib/i18n/`** — UI locales (`en`, `de`) and path helpers (`/de` prefix).
 - **`lib/content/`** — parse frontmatter, bilingual section headings (German/English), catalog + MCP loaders.
-- **`lib/export/`** — platform exports (Hermes/OpenClaw `SKILL.md`, `CLAUDE.md`, `AGENTS.md`, Cursor `.mdc`, Grok Bot setup message, generic prompt). Includes 12 export targets and seven MCP configuration formats. See the [CLI specification](docs/cli-spec.md) for the planned command-line interface.
+- **`lib/export/`** — platform exports (Hermes/OpenClaw `SKILL.md`, `CLAUDE.md`, `AGENTS.md`, Cursor `.mdc`, Grok Bot setup message, generic prompt). Includes 12 export targets and seven MCP configuration formats. See the [CLI specification](docs/cli-spec.md) for the command-line interface.
 - **Pages** — landing, catalog (client-side FlexSearch index), domain/category, template detail, MCP table.
 
 ## Roadmap

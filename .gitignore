@@ -17,6 +17,7 @@
 
 # production
 /build
+/packages/cli/dist/
 
 # content cache
 /.content-cache
