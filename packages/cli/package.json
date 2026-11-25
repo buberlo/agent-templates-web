@@ -1,0 +1,10 @@
+{
+  "name": "agentstencil",
+  "version": "0.1.0",
+  "description": "Browse and export AgentStencil templates from the terminal",
+  "bin": { "agentstencil": "./dist/index.js" },
+  "files": ["dist", "README.md"],
+  "license": "MIT",
+  "engines": { "node": ">=20" },
+  "dependencies": { "gray-matter": "^4.0.3" }
+}
