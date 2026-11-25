@@ -121,6 +121,12 @@ const de: Dictionary = {
     kicker: "Anleitung zu den Vorlagen",
     intro: "AgentStencil macht Vorlagen aus buberlo/agent-templates für deinen Agent nutzbar. Wähle eine Vorlage, prüfe den Ablauf und die Sicherheitshinweise, exportiere sie und konfiguriere die benötigten MCP-Server.",
     readGuide: "Anleitung lesen",
+    machineReadable: {
+      heading: "Machine-readable catalog",
+      llms: "Read the site overview and template directory.",
+      index: "Find template metadata and JSON detail links.",
+      detail: "Open the json_url from the index to read the full template, resolved MCP tools, and export metadata.",
+    },
     grokBot: {
       heading: "In Grok Bot verwenden",
       create: "Wähle in der Seitenleiste „New Bot“ (+) oder drücke Cmd+N bzw. Strg+N. Gib deinem Bot einen Namen.",
