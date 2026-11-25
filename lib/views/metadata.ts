@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { getPack } from "@/lib/content/packs";
 import {
   formatMessage,
   getDictionary,
@@ -54,6 +56,25 @@ export function howItWorksMetadata(locale: Locale): Metadata {
     title: howItWorks.title,
     description: howItWorks.intro,
     alternates: languageAlternates("/how-it-works", locale),
+  };
+}
+
+export function packsMetadata(locale: Locale): Metadata {
+  const { packs } = getDictionary(locale);
+  return {
+    title: packs.title,
+    description: packs.intro,
+    alternates: languageAlternates("/packs", locale),
+  };
+}
+
+export function packMetadata(locale: Locale, slug: string): Metadata {
+  const pack = getPack(slug);
+  if (!pack) notFound();
+
+  return {
+    ...getDictionary(locale).packs.entries[pack.slug],
+    alternates: languageAlternates(`/packs/${pack.slug}`, locale),
   };
 }
 

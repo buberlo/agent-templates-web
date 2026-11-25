@@ -1,5 +1,7 @@
 import type { ExportTarget } from "@/lib/content/constants";
 
+import type { PackSlug } from "@/lib/content/packs";
+
 type AdditionalInstructionTarget = "windsurf" | "gemini-cli" | "copilot" | "cline" | "kiro";
 
 export const LOCALES = ["en", "de"] as const;
@@ -14,6 +16,7 @@ export type Dictionary = {
   nav: {
     catalog: string;
     mcp: string;
+    packs: string;
     contentRepo: string;
   };
   language: {
@@ -144,6 +147,18 @@ export type Dictionary = {
     cursor: string[];
     generic: string[];
     additionalTargets: Record<AdditionalInstructionTarget, string[]>;
+  };
+  packs: {
+    title: string;
+    intro: string;
+    browse: string;
+    domains: string;
+    includedTemplates: string;
+    install: string;
+    installIntro: string;
+    templateCount: string;
+    toolCount: string;
+    entries: Record<PackSlug, { title: string; description: string }>;
   };
   catalog: {
     empty: string;

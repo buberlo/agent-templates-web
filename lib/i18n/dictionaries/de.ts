@@ -6,6 +6,7 @@ const de: Dictionary = {
     phaseBadge: "Phase 1 · Öffentlicher Katalog",
   },
   nav: {
+    packs: "Pakete",
     catalog: "Katalog",
     mcp: "MCP-Server",
     contentRepo: "Content-Repo",
@@ -168,6 +169,51 @@ const de: Dictionary = {
       "Kopiere den allgemeinen Prompt.",
       "Füge ihn in die Anweisungen deines Agents ein.",
     ],
+  },
+  packs: {
+    title: "Vorlagenpakete",
+    intro: "Entdecke kostenlose Sammlungen mit Agentenvorlagen für typische Arbeitsabläufe.",
+    browse: "Pakete ansehen",
+    domains: "Themenbereiche",
+    includedTemplates: "Enthaltene Vorlagen",
+    install: "Installation per CLI",
+    installIntro: "Führe die Befehle im Projektverzeichnis aus, um jede Vorlage als eigene, portierbare Prompt-Datei zu speichern.",
+    templateCount: "{count} Vorlagen",
+    toolCount: "{count} MCP-Tool-Konfigurationen",
+    entries: {
+      "developer-code-review": {
+        title: "Softwareentwicklung und Code-Review",
+        description: "Setze Änderungen um, prüfe Diffs, führe Tests aus, überarbeite Code und aktualisiere die technische Dokumentation.",
+      },
+      "devops-cloud-operations": {
+        title: "DevOps und Cloud-Betrieb",
+        description: "Erstelle CI-Pipelines und Container, untersuche Kubernetes-Rollouts und bearbeite Störungen im Produktivbetrieb.",
+      },
+      "research-grounded-knowledge": {
+        title: "Recherche und quellenbasiertes Wissen",
+        description: "Sammle Webquellen und Fachliteratur, verwalte Referenzen in Zotero und dokumentiere belegte Ergebnisse intern.",
+      },
+      "security-compliance-baseline": {
+        title: "Grundlagen für Sicherheit und Compliance",
+        description: "Lege Standards für Updates und Wiederherstellung fest, prüfe Berichte zur E-Mail-Authentifizierung und organisiere Datenschutzaufgaben.",
+      },
+      "ai-ops-mcp-builder": {
+        title: "KI-Betrieb und MCP-Entwicklung",
+        description: "Erstelle einen MCP-Server und wiederverwendbare Skills, verwalte den Kontext und evaluiere die Modellauswahl.",
+      },
+      "office-document-automation": {
+        title: "Office- und Dokumentenautomatisierung",
+        description: "Extrahiere Text aus Scans, erstelle Word-Dokumente und Präsentationen, prüfe Tabellen und veröffentliche PDFs.",
+      },
+      "content-growth-operations": {
+        title: "Content und Reichweite",
+        description: "Plane Inhalte, entwirf Texte, prüfe Onpage-SEO und bereite Newsletter sowie Social-Media-Kampagnen vor.",
+      },
+      "support-crm-operations": {
+        title: "Kundensupport und CRM",
+        description: "Priorisiere Tickets, entwirf Antworten, eskaliere Probleme, erkenne Lücken im Hilfe-Center, erfasse Kundenzufriedenheit und pflege CRM-Daten.",
+      },
+    },
   },
   catalog: {
     empty: "Dieser Katalog enthält noch keine Vorlagen.",

@@ -12,6 +12,7 @@ export function SiteHeader() {
   const pathname = usePathname();
   const nav = [
     { path: "/catalog", label: dict.nav.catalog },
+    { path: "/packs", label: dict.nav.packs },
     { path: "/mcp", label: dict.nav.mcp },
     { path: "/how-it-works", label: dict.howItWorks.title },
   ];
@@ -25,7 +26,7 @@ export function SiteHeader() {
           </span>
           <span>{dict.site.name}</span>
         </Link>
-        <nav aria-label={dict.common.navigation} className="col-span-2 row-start-2 flex min-h-10 items-center gap-3 text-sm lg:gap-5 text-muted sm:col-span-1 sm:col-start-2 sm:row-start-1">
+        <nav aria-label={dict.common.navigation} className="col-span-2 row-start-2 flex min-h-10 flex-wrap items-center gap-x-3 gap-y-1 text-sm lg:gap-5 text-muted sm:col-span-1 sm:col-start-2 sm:row-start-1">
           {nav.map(({ path, label }) => (
             <Link key={path} href={href(path)} aria-current={pathname === href(path) ? "page" : undefined} className="rounded transition-colors hover:text-accent aria-[current=page]:font-semibold aria-[current=page]:text-accent">
               {label}

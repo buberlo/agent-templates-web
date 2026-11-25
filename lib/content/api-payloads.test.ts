@@ -76,7 +76,7 @@ test("llms.txt lists resources, capabilities, domains, and template summaries", 
   for (const heading of ["Key resources", "Export targets", "MCP configuration clients", "Domains", "Templates"]) {
     assert.ok(output.includes(`\n## ${heading}\n`));
   }
-  for (const path of ["/catalog", "/mcp", "/how-it-works", "/api/templates.json", "/domains/writing"]) {
+  for (const path of ["/catalog", "/packs", "/mcp", "/how-it-works", "/api/templates.json", "/domains/writing"]) {
     assert.ok(output.includes(`(${siteUrl}${path})`));
   }
   assert.ok(output.includes("/api/templates/<id>.json"));
