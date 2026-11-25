@@ -50,6 +50,20 @@ export function TemplatePageContent({ locale, id }: { locale: Locale; id: string
     { id: "definition-of-done", label: d.template.sections.definitionOfDone, body: content.definitionOfDone },
     { id: "security", label: d.template.sections.security, body: content.security },
     { id: "pitfalls", label: d.template.sections.pitfalls, body: content.pitfalls },
+    { id: "changelog", label: d.changelog.templateHeading, extra: doc.changelog.length > 0 && (
+      <ol className="space-y-3 text-sm">
+        {doc.changelog.map((entry) => (
+          <li key={entry.sha} className="border-b pb-3 last:border-0">
+            <p className="text-muted">
+              <time dateTime={entry.date}>{entry.date}</time>
+              {" · "}
+              <code className="text-xs">{entry.sha}</code>
+            </p>
+            <p className="mt-1">{entry.subject}</p>
+          </li>
+        ))}
+      </ol>
+    ) },
     { id: "examples", label: d.template.sections.examples, body: content.examplesParsed.length ? undefined : content.examples, extra: content.examplesParsed.length > 0 && (
       <div className="space-y-4">
         {content.examplesParsed.map((example) => {

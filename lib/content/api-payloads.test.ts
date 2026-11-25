@@ -67,6 +67,7 @@ const doc: TemplateDocument = {
   body: "Internal raw body",
   filePath,
   searchText: "Internal search text",
+  changelog: [],
 };
 
 test("llms.txt lists resources, capabilities, domains, and template summaries", () => {
@@ -138,6 +139,7 @@ test("template detail preserves sections and only publishes known URLs and publi
     resolved_mcp_tools: detail.resolved_mcp_tools,
     exports: detail.exports,
     source_url: sourceUrl,
+    changelog: [],
   });
   assert.deepEqual(detail.resolved_mcp_tools.map(({ sourceUrls }) => sourceUrls), [[mcpUrl], []]);
   assert.deepEqual(detail.resolved_mcp_tools[0].endpoint, { url: mcpUrl, type: "http" });

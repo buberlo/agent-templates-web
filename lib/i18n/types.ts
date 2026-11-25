@@ -208,6 +208,12 @@ export type Dictionary = {
     allTemplates: string;
     domainMeta: string;
   };
+  changelog: {
+    title: string;
+    intro: string;
+    empty: string;
+    templateHeading: string;
+  };
   template: {
     onPage: string;
     mcpTools: string;

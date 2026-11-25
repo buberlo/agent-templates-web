@@ -60,6 +60,7 @@ function template(id: string, domain: string, required_tools: RequiredTool[] = [
     body: "",
     filePath: "",
     searchText: "",
+    changelog: [],
   };
 }
 

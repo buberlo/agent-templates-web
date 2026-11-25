@@ -68,6 +68,15 @@ export function agentSupportMetadata(locale: Locale): Metadata {
   };
 }
 
+export function changelogMetadata(locale: Locale): Metadata {
+  const { changelog } = getDictionary(locale);
+  return {
+    title: changelog.title,
+    description: changelog.intro,
+    alternates: languageAlternates("/changelog", locale),
+  };
+}
+
 export function packsMetadata(locale: Locale): Metadata {
   const { packs } = getDictionary(locale);
   return {

@@ -302,6 +302,13 @@ const de: Dictionary = {
     allTemplates: "Alle Vorlagen",
     domainMeta: "Agenten-Vorlagen in der Domain {domain}.",
   },
+  changelog: {
+    title: "Änderungsprotokoll",
+    intro:
+      "Aktuelle Commits an Vorlagendateien im Content-Repository buberlo/agent-templates (neueste zuerst).",
+    empty: "Für diesen Build ist keine Git-Historie im Content-Cache verfügbar.",
+    templateHeading: "Vorlagen-Changelog",
+  },
   template: {
     onPage: "Auf dieser Seite",
     mcpTools: "MCP-Werkzeuge",
