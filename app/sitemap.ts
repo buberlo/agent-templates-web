@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { curatedPacks } from "@/lib/content/packs";
 import { getAllTemplates, getCatalog } from "@/lib/content/loader";
+import { listUseCaseLandings } from "@/lib/content/use-cases";
 import { localizePath, LOCALES } from "@/lib/i18n";
 import { siteMetadataBase } from "@/lib/i18n";
 
@@ -48,6 +49,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     for (const c of d.categories) {
       pushBoth(routes, `/domains/${d.slug}/${c.slug}`, now);
     }
+  }
+
+  for (const landing of listUseCaseLandings("en")) {
+    pushBoth(routes, landing.canonicalPath, now);
   }
 
   for (const t of templates) {
