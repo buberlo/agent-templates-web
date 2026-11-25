@@ -178,6 +178,19 @@ const de: Dictionary = {
     kicker: "Anleitung zu den Vorlagen",
     intro: "AgentStencil macht Vorlagen aus buberlo/agent-templates für deinen Agent nutzbar. Wähle eine Vorlage, prüfe den Ablauf und die Sicherheitshinweise, exportiere sie und konfiguriere die benötigten MCP-Server.",
     readGuide: "Anleitung lesen",
+    videoWalkthroughs: {
+      heading: "Video-Anleitungen",
+      watchOnYouTube: "Auf YouTube ansehen",
+      playVideo: "Video abspielen: {title}",
+      grokbot: {
+        title: "Vorlage in Grok Bot einrichten (3 Schritte)",
+        description: "Bot anlegen, Einrichtungsnachricht einfügen und MCP-Tools verbinden.",
+      },
+      hermes: {
+        title: "Skill in Hermes Agent hinzufügen (3 Schritte)",
+        description: "SKILL.md mit Frontmatter exportieren und unter ~/.hermes/skills/ ablegen.",
+      },
+    },
     machineReadable: {
       heading: "Machine-readable catalog",
       llms: "Read the site overview and template directory.",
@@ -362,6 +375,7 @@ const de: Dictionary = {
     heading: "Export für deine Plattform",
     download: "Herunterladen",
     copyExport: "Export kopieren",
+    watchHow: "Anleitung ansehen",
     platformLabel: "Zielplattform",
     descriptions: {
       "windsurf": "Windsurf Anweisungen (.windsurfrules)",

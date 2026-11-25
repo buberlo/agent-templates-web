@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {
   EXPORT_TARGETS,
   type ExportTarget,
@@ -30,8 +31,10 @@ export type ExportPanelDoc = {
   filePath: string;
 };
 
+const WALKTHROUGH_EXPORT_TARGETS = new Set<ExportTarget>(["grokbot", "hermes"]);
+
 export function ExportPanel({ doc }: { doc: ExportPanelDoc }) {
-  const { dict } = useLocale();
+  const { dict, href } = useLocale();
   const [target, setTarget] = useState<ExportTarget>("generic");
   const result = useMemo(() => {
     const fullDoc = {
@@ -80,7 +83,20 @@ export function ExportPanel({ doc }: { doc: ExportPanelDoc }) {
           ))}
         </div>
       </fieldset>
-      <p className="mt-4 text-sm text-muted">{description}</p>
+      <p className="mt-4 text-sm text-muted">
+        {description}
+        {WALKTHROUGH_EXPORT_TARGETS.has(target) && (
+          <>
+            {" "}
+            <Link
+              href={`${href("/how-it-works")}#walkthrough-${target}`}
+              className="text-link whitespace-nowrap"
+            >
+              {dict.export.watchHow}
+            </Link>
+          </>
+        )}
+      </p>
       <div className="mt-4 flex flex-wrap gap-2">
         {files.map((file) => (
           <button

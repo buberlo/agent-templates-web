@@ -139,6 +139,13 @@ export type Dictionary = {
     kicker: string;
     intro: string;
     readGuide: string;
+    videoWalkthroughs: {
+      heading: string;
+      watchOnYouTube: string;
+      playVideo: string;
+      grokbot: { title: string; description: string };
+      hermes: { title: string; description: string };
+    };
     machineReadable: {
       heading: string;
       llms: string;
@@ -260,6 +267,7 @@ export type Dictionary = {
     heading: string;
     download: string;
     copyExport: string;
+    watchHow: string;
     platformLabel: string;
     descriptions: Record<ExportTarget, string>;
   };

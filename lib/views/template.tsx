@@ -130,6 +130,9 @@ export function TemplatePageContent({ locale, id }: { locale: Locale; id: string
             )}
             <CopyButton text={exportTemplate(doc, "grokbot").content} label={grok.copy} />
             <a href={GROK_BOT_DOCS_URL} className="text-link text-sm">{grok.docs}</a>
+            <Link href={`${localizePath(locale, "/how-it-works")}#walkthrough-grokbot`} className="text-link text-sm">
+              {d.export.watchHow}
+            </Link>
           </div>
         </section>
       )}
