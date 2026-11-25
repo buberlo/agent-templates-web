@@ -12,6 +12,16 @@ export const PLATFORM_LABELS: Record<string, string> = {
   "copilot": "GitHub Copilot",
   "cline": "Cline",
   "kiro": "Kiro",
+  "roo-code": "Roo Code",
+  continue: "Continue",
+  goose: "Goose",
+  aider: "Aider",
+  zed: "Zed",
+  "openai-agents-py": "OpenAI Agents SDK (Python)",
+  "openai-agents-ts": "OpenAI Agents SDK (TypeScript)",
+  crewai: "CrewAI",
+  n8n: "n8n",
+  langgraph: "LangGraph",
 };
 
 export const EXPORT_TARGETS = [
@@ -27,6 +37,16 @@ export const EXPORT_TARGETS = [
   "copilot",
   "cline",
   "kiro",
+  "roo-code",
+  "continue",
+  "goose",
+  "aider",
+  "zed",
+  "openai-agents-py",
+  "openai-agents-ts",
+  "crewai",
+  "n8n",
+  "langgraph",
 ] as const;
 
 export type ExportTarget = (typeof EXPORT_TARGETS)[number];

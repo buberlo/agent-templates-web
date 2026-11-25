@@ -48,7 +48,7 @@ These public endpoints regenerate with each site build:
 |----------|----------|
 | `/llms.txt` | Plain-text site overview with catalog links, supported clients, and template summaries |
 | `/api/templates.json` | Catalog timestamp, domains, template metadata, and relative `json_url` and `page_url` links |
-| `/api/templates/<id>.json` | Template frontmatter, instructions, workflow, examples, resolved MCP tools, source link, and filenames and media types for all 12 exports |
+| `/api/templates/<id>.json` | Template frontmatter, instructions, workflow, examples, resolved MCP tools, source link, and filenames and media types for all 22 exports |
 
 Use an entry's `json_url` to fetch a template. Resolve relative URLs against the index's `site_url` or the origin that served the index. Template text retains its source language.
 
@@ -92,7 +92,7 @@ See the [CLI usage guide](packages/cli/README.md) for search, export targets, an
 - **`scripts/fetch-content.mjs`** — shallow clone of the content repository.
 - **`lib/i18n/`** — UI locales (`en`, `de`) and path helpers (`/de` prefix).
 - **`lib/content/`** — parse frontmatter, bilingual section headings (German/English), catalog + MCP loaders.
-- **`lib/export/`** — platform exports (Hermes/OpenClaw `SKILL.md`, `CLAUDE.md`, `AGENTS.md`, Cursor `.mdc`, Grok Bot setup message, generic prompt). Includes 12 export targets and seven MCP configuration formats. See the [CLI specification](docs/cli-spec.md) for the command-line interface.
+- **`lib/export/`** — platform exports (Hermes/OpenClaw `SKILL.md`, `CLAUDE.md`, `AGENTS.md`, Cursor `.mdc`, Grok Bot setup message, generic prompt, and 10 additional agent formats). Includes 22 export targets and seven MCP configuration formats. See [export targets](docs/export-targets.md) and the [CLI specification](docs/cli-spec.md).
 - **Pages** — landing, catalog (client-side FlexSearch index), domain/category, template detail, MCP table.
 
 ## Roadmap

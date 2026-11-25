@@ -18,6 +18,7 @@ export type Dictionary = {
     catalog: string;
     mcp: string;
     packs: string;
+    agents: string;
     contentRepo: string;
   };
   language: {
@@ -68,15 +69,20 @@ export type Dictionary = {
     name: string;
     type: string;
   };
-  platforms: Record<AdditionalInstructionTarget, string> & {
-    hermes: string;
-    grokbot: string;
-    openclaw: string;
-    "claude-code": string;
-    codex: string;
-    cursor: string;
+  platforms: Record<ExportTarget, string> & {
     "generic-mcp-agents": string;
-    generic: string;
+  };
+  agentSupport: {
+    title: string;
+    intro: string;
+    exportDocs: string;
+    officialDocs: string;
+    columns: {
+      target: string;
+      output: string;
+      multiFile: string;
+      docs: string;
+    };
   };
   quality: {
     levels: Record<QualityLevel, string>;
