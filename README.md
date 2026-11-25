@@ -40,6 +40,18 @@ npm run dev
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm test` | Run unit tests |
 
+## Machine-readable catalog
+
+These public endpoints regenerate with each site build:
+
+| Endpoint | Contents |
+|----------|----------|
+| `/llms.txt` | Plain-text site overview with catalog links, supported clients, and template summaries |
+| `/api/templates.json` | Catalog timestamp, domains, template metadata, and relative `json_url` and `page_url` links |
+| `/api/templates/<id>.json` | Template frontmatter, instructions, workflow, examples, resolved MCP tools, source link, and filenames and media types for all 12 exports |
+
+Use an entry's `json_url` to fetch a template. Resolve relative URLs against the index's `site_url` or the origin that served the index. Template text retains its source language.
+
 ## Vercel deployment
 
 1. Import this GitHub repository in Vercel.

@@ -118,6 +118,12 @@ export type Dictionary = {
     kicker: string;
     intro: string;
     readGuide: string;
+    machineReadable: {
+      heading: string;
+      llms: string;
+      index: string;
+      detail: string;
+    };
     grokBot: {
       heading: string;
       create: string;

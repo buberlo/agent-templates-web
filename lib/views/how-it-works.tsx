@@ -62,6 +62,15 @@ export function HowItWorksPageContent({ locale }: { locale: Locale }) {
           </section>
         ))}
       </div>
+
+      <section className="panel p-5 sm:p-8">
+        <h2 className="section-title">{guide.machineReadable.heading}</h2>
+        <ul className="mt-3 space-y-2 text-muted">
+          <li><a href="/llms.txt" className="text-link">/llms.txt</a> {guide.machineReadable.llms}</li>
+          <li><a href="/api/templates.json" className="text-link">/api/templates.json</a> {guide.machineReadable.index}</li>
+          <li><code>{"/api/templates/<id>.json"}</code> {guide.machineReadable.detail}</li>
+        </ul>
+      </section>
     </article>
   );
 }
