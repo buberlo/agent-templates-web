@@ -22,7 +22,12 @@ export function add(content: Content, id: string, target: ExportTarget, stdout: 
     console.log(writeInstructions(root, relative, file.content, dryRun));
   }
   if (target === "grokbot") console.log("Paste the setup message into a new Grok Bot.");
-  if (target === "hermes" || target === "openclaw") {
+  if (target === "hermes") {
+    console.log(
+      "Place as ~/.hermes/skills/<name>/SKILL.md. Frontmatter name must match the folder.",
+    );
+  }
+  if (target === "openclaw") {
     console.log("Place the export as SKILL.md in the agent's skill directory.");
   }
 }

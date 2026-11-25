@@ -71,6 +71,10 @@ for (const target of EXPORT_TARGETS) {
     assert.match(body, /Group books by topic\./);
     assert.match(body, /Remove duplicate entries\./);
     assert.deepEqual(exportTemplateForAgents(doc, target), result);
+    if (target === "hermes") {
+      assert.match(result.content, /^---\nname: reading-list\ndescription: /);
+      assert.match(result.content, /\n---\n\n# Reading List Organizer/);
+    }
     if (target === "kiro") assert.match(result.content, /^---\ninclusion: always\n---\n\n/);
     if (target === "continue") assert.match(result.content, /^---\nname:/);
     if (target === "goose") {

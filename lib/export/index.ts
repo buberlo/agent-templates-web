@@ -1,11 +1,15 @@
 import { EXPORT_TARGETS, type ExportTarget } from "@/lib/content/constants";
 import type { TemplateDocument } from "@/lib/content/types";
 import { EXTENDED_EXPORT_MAP } from "./extended-targets";
-import { section } from "./shared";
+import { hermesSkillDescription, section, stripMarkdownInline } from "./shared";
 import type { ExportResult } from "./types";
 
 export type { ExportExtraFile, ExportResult } from "./types";
 export { allExportFiles } from "./types";
+
+function yamlQuoted(value: string): string {
+  return JSON.stringify(value);
+}
 
 function skillMarkdown(doc: TemplateDocument): string {
   const fm = doc.frontmatter;
@@ -24,6 +28,21 @@ function skillMarkdown(doc: TemplateDocument): string {
     "## Safety",
     "",
     safety,
+  ]
+    .join("\n")
+    .trim();
+}
+
+function hermesSkillMarkdown(doc: TemplateDocument): string {
+  const fm = doc.frontmatter;
+  const body = skillMarkdown(doc);
+  return [
+    "---",
+    `name: ${fm.id}`,
+    `description: ${yamlQuoted(hermesSkillDescription(doc))}`,
+    "---",
+    "",
+    body,
   ]
     .join("\n")
     .trim();
@@ -143,35 +162,39 @@ function genericPrompt(doc: TemplateDocument): string {
     .trim();
 }
 
+function grokPlain(text: string): string {
+  return stripMarkdownInline(text);
+}
+
 function grokBotMessage(doc: TemplateDocument): string {
   const fm = doc.frontmatter;
   const tools = fm.required_tools.map(({ name, install, version_notes }) =>
-    `- ${[name, install, version_notes].filter(Boolean).join(" — ")}`,
+    grokPlain(`- ${[name, install, version_notes].filter(Boolean).join(" — ")}`),
   );
 
   return [
-    `Your role is ${fm.title}. Use the following instructions for this job.`,
+    grokPlain(`Your role is ${fm.title}. Use the following instructions for this job.`),
     "",
     "Job",
-    section(doc, "purpose") || fm.title,
+    grokPlain(section(doc, "purpose") || fm.title),
     "",
     "System prompt",
-    doc.sections.systemPromptText || doc.sections.systemPrompt || "",
+    grokPlain(doc.sections.systemPromptText || doc.sections.systemPrompt || ""),
     "",
     "Workflow",
-    section(doc, "workflow"),
+    grokPlain(section(doc, "workflow")),
     "",
     "Tool stack and sources",
     "Use the listed apps and MCP connectors as applicable. Tell me which ones I need to connect before you start.",
     ...tools,
-    section(doc, "toolStack"),
+    grokPlain(section(doc, "toolStack")),
     "",
     "Definition of done",
-    section(doc, "definitionOfDone"),
-    ...fm.outputs.map((output) => `- ${output}`),
+    grokPlain(section(doc, "definitionOfDone")),
+    ...fm.outputs.map((output) => grokPlain(`- ${output}`)),
     "",
     "Security and approval boundaries",
-    section(doc, "security"),
+    grokPlain(section(doc, "security")),
     "Ask me before taking any action that requires approval.",
     "",
     "Save this workflow as a reusable skill and remember these rules for future messages.",
@@ -196,8 +219,9 @@ const EXPORT_MAP: Record<
   hermes: (doc) => ({
     filename: `${doc.frontmatter.id}-SKILL.md`,
     mimeType: "text/markdown",
-    content: skillMarkdown(doc),
-    description: "Hermes skill (system prompt + workflow, no YAML frontmatter)",
+    content: hermesSkillMarkdown(doc),
+    description:
+      "Hermes skill with YAML frontmatter (name + description) for ~/.hermes/skills/<name>/SKILL.md",
   }),
   openclaw: (doc) => ({
     filename: `${doc.frontmatter.id}-SKILL.md`,
