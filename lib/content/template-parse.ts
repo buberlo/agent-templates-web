@@ -1,6 +1,7 @@
 import matter from "gray-matter";
 import { parseSections, stripMarkdownForSearch } from "./sections";
 import type { TemplateDocument, TemplateFrontmatter } from "./types";
+import { resolveTemplateVersioning } from "./versioning";
 
 export function formatInvalidFrontmatterWarning(
   relativePath: string,
@@ -42,8 +43,16 @@ export function parseTemplateRaw(
 
   const { grokbot_template_url, ...fields } = data as TemplateFrontmatter;
   const grokBotTemplateUrl = validateGrokBotTemplateUrl(grokbot_template_url);
+  const normalizedPath = relativePath.replace(/\\/g, "/");
+  const versioning = resolveTemplateVersioning(
+    normalizedPath,
+    (fields as TemplateFrontmatter).version,
+    (fields as TemplateFrontmatter).updated,
+  );
   const frontmatter: TemplateFrontmatter = {
     ...fields,
+    version: versioning.version,
+    updated: versioning.updated,
     ...(grokBotTemplateUrl && { grokbot_template_url: grokBotTemplateUrl }),
   };
   const sections = parseSections(content);
@@ -63,7 +72,8 @@ export function parseTemplateRaw(
     frontmatter,
     sections,
     body: content,
-    filePath: relativePath.replace(/\\/g, "/"),
+    filePath: normalizedPath,
     searchText,
+    changelog: versioning.changelog,
   };
 }

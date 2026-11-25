@@ -38,6 +38,7 @@ export function ExportPanel({ doc }: { doc: ExportPanelDoc }) {
       ...doc,
       sections: { ...doc.sections, examplesParsed: [] },
       searchText: "",
+      changelog: [],
     };
     return exportTemplate(fullDoc, target);
   }, [doc, target]);

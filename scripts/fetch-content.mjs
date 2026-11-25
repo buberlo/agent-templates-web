@@ -34,6 +34,11 @@ const current = fs.existsSync(marker)
 if (!fs.existsSync(cacheDir)) {
   console.log(`Cloning ${repoUrl} (ref ${ref}) into ${cacheDir}`);
   run(`git clone --depth 1 --branch ${ref} ${repoUrl} ${cacheDir}`);
+  try {
+    run(`git -C ${cacheDir} fetch --deepen=64 origin ${ref}`);
+  } catch {
+    console.warn("Could not deepen content history; changelog may be sparse.");
+  }
   fs.writeFileSync(marker, ref);
 } else if (current !== ref) {
   console.log(`Updating content cache to ref ${ref}`);
@@ -44,6 +49,11 @@ if (!fs.existsSync(cacheDir)) {
   console.log(`Content cache present (${ref}), fetching latest…`);
   run(`git -C ${cacheDir} fetch origin ${ref} --depth 1`);
   run(`git -C ${cacheDir} reset --hard FETCH_HEAD`);
+  try {
+    run(`git -C ${cacheDir} fetch --deepen=64 origin ${ref}`);
+  } catch {
+    console.warn("Could not deepen content history; changelog may be sparse.");
+  }
 }
 
 const catalog = path.join(cacheDir, "catalog.json");

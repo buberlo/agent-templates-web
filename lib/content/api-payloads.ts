@@ -89,6 +89,7 @@ export function buildTemplateDetailJson(
       };
     }),
     source_url: sourceUrl,
+    changelog: doc.changelog,
   };
 }
 

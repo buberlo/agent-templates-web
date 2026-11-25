@@ -302,6 +302,13 @@ const en: Dictionary = {
     allTemplates: "All templates",
     domainMeta: "Agent templates in the {domain} domain.",
   },
+  changelog: {
+    title: "Changelog",
+    intro:
+      "Recent commits that touched template files in the buberlo/agent-templates content repository (newest first).",
+    empty: "No git history is available for the content cache in this build.",
+    templateHeading: "Template changelog",
+  },
   template: {
     onPage: "On this page",
     mcpTools: "MCP tools",

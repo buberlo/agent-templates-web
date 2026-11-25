@@ -55,12 +55,19 @@ export interface CatalogJson {
   templates: CatalogTemplateEntry[];
 }
 
+export interface TemplateChangelogEntry {
+  sha: string;
+  date: string;
+  subject: string;
+}
+
 export interface TemplateDocument {
   frontmatter: TemplateFrontmatter;
   sections: ParsedSections;
   body: string;
   filePath: string;
   searchText: string;
+  changelog: TemplateChangelogEntry[];
 }
 
 export interface CategoryMeta {
