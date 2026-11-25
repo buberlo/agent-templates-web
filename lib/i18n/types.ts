@@ -1,3 +1,4 @@
+import type { QualityLevel, QualityScore } from "@/lib/content/quality-score";
 import type { ExportTarget } from "@/lib/content/constants";
 
 import type { PackSlug } from "@/lib/content/packs";
@@ -76,6 +77,16 @@ export type Dictionary = {
     cursor: string;
     "generic-mcp-agents": string;
     generic: string;
+  };
+  quality: {
+    levels: Record<QualityLevel, string>;
+    heading: string;
+    score: string;
+    method: string;
+    waiver: string;
+    passed: string;
+    failed: string;
+    gates: Record<QualityScore["gates"][number]["id"], string>;
   };
   risk: {
     suffix: string;

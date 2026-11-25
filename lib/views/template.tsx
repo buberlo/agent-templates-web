@@ -6,13 +6,14 @@ import { ExampleKindBadge } from "@/components/example-kind-badge";
 import { McpConfigGenerator } from "@/components/mcp-config-generator";
 import { ExportPanel } from "@/components/export-panel";
 import { CodeBlock, MarkdownContent } from "@/components/markdown-content";
+import { QualityBadge } from "@/components/quality-badge";
 import { RiskBadge } from "@/components/risk-badge";
 import { githubBlobUrl, PLATFORM_LABELS, suggestIssueUrl } from "@/lib/content/config";
 import { GROK_BOT_DOCS_URL } from "@/lib/content/grok-bot-links";
-import { getMcpCatalog, getTemplate } from "@/lib/content/loader";
+import { getMcpCatalog, getTemplate, getTemplateQuality } from "@/lib/content/loader";
 import { resolveMcpTools } from "@/lib/content/resolve-mcp-tools";
 import { exportTemplate } from "@/lib/export";
-import { getDictionary, localizePath, type Locale } from "@/lib/i18n";
+import { formatMessage, getDictionary, localizePath, type Locale } from "@/lib/i18n";
 import { formatSlugLabel } from "@/lib/utils";
 
 export function TemplatePageContent({ locale, id }: { locale: Locale; id: string }) {
@@ -22,6 +23,8 @@ export function TemplatePageContent({ locale, id }: { locale: Locale; id: string
 
   const fm = doc.frontmatter;
   const content = doc.sections;
+  const quality = getTemplateQuality(doc);
+  const score = formatMessage(d.quality.score, { passed: quality.passedGates, total: quality.totalGates });
   const grok = d.howItWorks.grokBot;
   const resolvedMcpTools = resolveMcpTools(fm.required_tools, getMcpCatalog());
   const mcpTools = [...new Set(resolvedMcpTools.map((tool) => tool.name))];
@@ -83,6 +86,7 @@ export function TemplatePageContent({ locale, id }: { locale: Locale; id: string
         <p className="mt-2 font-mono text-sm text-muted [overflow-wrap:anywhere]">{fm.id}</p>
         <div className="mt-5 flex flex-wrap items-center gap-2">
           <RiskBadge level={fm.risk_level} />
+          <QualityBadge level={quality.level} />
           {fm.target_agents.map((agent) => <span className="chip" key={agent}>{PLATFORM_LABELS[agent] || agent}</span>)}
         </div>
         <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 border-t pt-4 text-sm">
@@ -133,6 +137,28 @@ export function TemplatePageContent({ locale, id }: { locale: Locale; id: string
               ))}
             </dl>
           </section>
+          <details className="panel mb-6 p-4 text-sm sm:p-5">
+            <summary className="cursor-pointer font-semibold">{d.quality.heading} · {score}</summary>
+            <p className="mt-3 text-muted">{d.quality.method}</p>
+            {quality.hasBacklogWaiver && <p className="mt-2 text-muted">{d.quality.waiver}</p>}
+            <ul className="mt-4 grid gap-x-6 gap-y-2 sm:grid-cols-2">
+              {quality.gates.map((gate) => {
+                const label = gate.id === "requiredSection"
+                  ? formatMessage(d.quality.gates.requiredSection, { section: gate.section === "basicExamples" ? d.template.sections.examples : d.template.sections[gate.section] })
+                  : gate.id === "expectedOutput"
+                    ? formatMessage(d.quality.gates.expectedOutput, { index: gate.index })
+                    : d.quality.gates[gate.id];
+                return (
+                  <li key={label} className="flex items-baseline justify-between gap-2 border-t pt-2">
+                    <span>{label}</span>
+                    <span className={gate.passed ? "text-low" : "text-high"}>
+                      {gate.passed ? d.quality.passed : d.quality.failed}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+          </details>
           {sections.map(({ id, label, body, extra }) => (
             <section key={id} id={id} tabIndex={-1} className="anchor-section">
               <h2 className="section-title mb-4">{label}</h2>

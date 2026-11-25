@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { ArrowUpRight, Layers } from "lucide-react";
 import { CopyButton } from "@/components/copy-button";
 import { TemplateCard } from "@/components/template-card";
-import { getAllTemplates } from "@/lib/content/loader";
+import { getAllTemplates, getTemplateQuality } from "@/lib/content/loader";
 import {
   curatedPacks,
   getPack,
@@ -82,7 +82,7 @@ export function PackPageContent({ locale, slug }: { locale: Locale; slug: string
       <section>
         <h2 className="text-xl font-semibold">{d.packs.includedTemplates}</h2>
         <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {templates.map(({ frontmatter }) => <TemplateCard key={frontmatter.id} template={frontmatter} />)}
+          {templates.map((doc) => <TemplateCard key={doc.frontmatter.id} template={{ ...doc.frontmatter, qualityLevel: getTemplateQuality(doc).level }} />)}
         </div>
       </section>
 

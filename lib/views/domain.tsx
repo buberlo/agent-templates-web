@@ -5,6 +5,7 @@ import { MarkdownContent } from "@/components/markdown-content";
 import {
   getCatalog,
   getDomainMeta,
+  getTemplateQuality,
   getTemplatesByDomain,
 } from "@/lib/content/loader";
 import {
@@ -77,7 +78,7 @@ export function DomainPageContent({
         <h2 className="text-xl font-semibold">{d.domain.allTemplates}</h2>
         <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {templates.map((t) => (
-            <TemplateCard key={t.frontmatter.id} template={t.frontmatter} />
+            <TemplateCard key={t.frontmatter.id} template={{ ...t.frontmatter, qualityLevel: getTemplateQuality(t).level }} />
           ))}
         </div>
       </section>

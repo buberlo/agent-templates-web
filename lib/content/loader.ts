@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { getContentRoot } from "./config";
+import { computeQualityScore, parseQualityBacklog, type QualityScore } from "./quality-score";
 import { parseTemplateRaw } from "./template-parse";
 import type {
   AdapterNote,
@@ -19,6 +20,24 @@ const CACHE: {
   adapters?: AdapterNote[];
   loaded?: boolean;
 } = {};
+
+const qualityScores = new WeakMap<TemplateDocument, QualityScore>();
+let qualityBacklog: ReadonlySet<string> | undefined;
+
+export function getTemplateQuality(doc: TemplateDocument): QualityScore {
+  const cached = qualityScores.get(doc);
+  if (cached) return cached;
+
+  if (!qualityBacklog) {
+    const backlogPath = path.join(getContentRoot(), "scripts", "quality_backlog.txt");
+    qualityBacklog = fs.existsSync(backlogPath)
+      ? parseQualityBacklog(fs.readFileSync(backlogPath, "utf8"))
+      : new Set();
+  }
+  const score = computeQualityScore(doc.body, doc.filePath, qualityBacklog);
+  qualityScores.set(doc, score);
+  return score;
+}
 
 function readJson<T>(filePath: string): T {
   return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
@@ -184,5 +203,6 @@ export function getCatalogSearchPayload() {
     risk_level: t.frontmatter.risk_level,
     updated: t.frontmatter.updated,
     searchText: t.searchText,
+    qualityLevel: getTemplateQuality(t).level,
   }));
 }
