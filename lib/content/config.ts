@@ -17,6 +17,11 @@ export function githubBlobUrl(filePath: string, ref?: string): string {
   return `https://github.com/${CONTENT_REPO_OWNER}/${CONTENT_REPO_NAME}/blob/${branch}/${filePath}`;
 }
 
+export function githubEditUrl(filePath: string, ref?: string): string {
+  const branch = ref || CONTENT_REPO_DEFAULT_BRANCH;
+  return `https://github.com/${CONTENT_REPO_OWNER}/${CONTENT_REPO_NAME}/edit/${branch}/${filePath}`;
+}
+
 export function githubRawUrl(filePath: string, ref?: string): string {
   const branch = ref || CONTENT_REPO_DEFAULT_BRANCH;
   return `https://raw.githubusercontent.com/${CONTENT_REPO_OWNER}/${CONTENT_REPO_NAME}/${branch}/${filePath}`;

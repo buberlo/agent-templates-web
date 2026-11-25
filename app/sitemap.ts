@@ -37,6 +37,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   pushBoth(routes, "/how-it-works", now);
   pushBoth(routes, "/agent-support", now);
   pushBoth(routes, "/changelog", now);
+  pushBoth(routes, "/contribute", now);
   pushBoth(routes, "/packs", now);
 
   for (const { slug } of curatedPacks) {

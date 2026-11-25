@@ -52,6 +52,7 @@ export type Dictionary = {
     metadata: string;
     source: string;
     viewOnGitHub: string;
+    editOnGitHub: string;
     suggestImprovement: string;
     copy: string;
     copied: string;
@@ -207,6 +208,18 @@ export type Dictionary = {
     statsLine: string;
     allTemplates: string;
     domainMeta: string;
+  };
+  contribute: {
+    nav: string;
+    title: string;
+    intro: string;
+    stepsHeading: string;
+    steps: string[];
+    contributingGuide: string;
+    validator: string;
+    openIssue: string;
+    principleHeading: string;
+    principle: string;
   };
   changelog: {
     title: string;

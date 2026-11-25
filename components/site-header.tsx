@@ -15,6 +15,7 @@ export function SiteHeader() {
     { path: "/packs", label: dict.nav.packs },
     { path: "/mcp", label: dict.nav.mcp },
     { path: "/agent-support", label: dict.nav.agents },
+    { path: "/contribute", label: dict.contribute.nav },
     { path: "/how-it-works", label: dict.howItWorks.title },
   ];
 

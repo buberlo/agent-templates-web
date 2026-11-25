@@ -44,6 +44,7 @@ const en: Dictionary = {
     metadata: "Metadata",
     source: "Source",
     viewOnGitHub: "View on GitHub",
+    editOnGitHub: "Edit on GitHub",
     suggestImprovement: "Suggest an improvement",
     copy: "Copy",
     copied: "Copied",
@@ -301,6 +302,25 @@ const en: Dictionary = {
     statsLine: "{templates} templates across {categories} categories",
     allTemplates: "All templates",
     domainMeta: "Agent templates in the {domain} domain.",
+  },
+  contribute: {
+    nav: "Contribute",
+    title: "Contribute a template",
+    intro:
+      "New templates and fixes ship through the public buberlo/agent-templates repository. Propose changes with a pull request; the validator and catalog index must pass before the site rebuilds.",
+    stepsHeading: "How to submit",
+    steps: [
+      "Fork buberlo/agent-templates and create a branch for your template or fix.",
+      "Add or edit a markdown file under domains/ following the existing frontmatter and section structure.",
+      "Run the repository validator (scripts/validate_and_index.py) locally so catalog.json stays consistent.",
+      "Open a pull request on GitHub with a short summary of what the template enables.",
+    ],
+    contributingGuide: "CONTRIBUTING.md in the content repository",
+    validator: "Validator scripts in the content repository",
+    openIssue: "Open a GitHub issue when you are not ready to submit a PR",
+    principleHeading: "What happens after merge",
+    principle:
+      "When your pull request merges on the content repo default branch, the site redeploys automatically and picks up version history from git. This website does not store template bodies outside that repository.",
   },
   changelog: {
     title: "Changelog",

@@ -9,7 +9,7 @@ import { ExportPanel } from "@/components/export-panel";
 import { CodeBlock, MarkdownContent } from "@/components/markdown-content";
 import { QualityBadge } from "@/components/quality-badge";
 import { RiskBadge } from "@/components/risk-badge";
-import { githubBlobUrl, PLATFORM_LABELS, suggestIssueUrl } from "@/lib/content/config";
+import { githubBlobUrl, githubEditUrl, PLATFORM_LABELS, suggestIssueUrl } from "@/lib/content/config";
 import { GROK_BOT_DOCS_URL } from "@/lib/content/grok-bot-links";
 import { getMcpCatalog, getTemplate, getTemplateQuality } from "@/lib/content/loader";
 import { resolveMcpTools } from "@/lib/content/resolve-mcp-tools";
@@ -107,6 +107,7 @@ export function TemplatePageContent({ locale, id }: { locale: Locale; id: string
         <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 border-t pt-4 text-sm">
           <a href="#export" className="button-primary"><ArrowDownToLine size={17} aria-hidden="true" />{d.export.heading}</a>
           <a href={githubBlobUrl(doc.filePath)} className="text-link inline-flex items-center gap-1">{d.common.viewOnGitHub}<ArrowUpRight size={14} aria-hidden="true" /></a>
+          <a href={githubEditUrl(doc.filePath)} className="text-link inline-flex items-center gap-1">{d.common.editOnGitHub}<ArrowUpRight size={14} aria-hidden="true" /></a>
           <a href={suggestIssueUrl(fm.id, doc.filePath)} className="text-link">{d.common.suggestImprovement}</a>
         </div>
       </header>
