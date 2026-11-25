@@ -178,6 +178,19 @@ const en: Dictionary = {
     kicker: "Template guide",
     intro: "AgentStencil turns templates from buberlo/agent-templates into instructions for your agent. Choose a template, review its workflow and safety guidance, then export it and configure any MCP servers it requires.",
     readGuide: "Read the setup guide",
+    videoWalkthroughs: {
+      heading: "Video walkthroughs",
+      watchOnYouTube: "Watch on YouTube",
+      playVideo: "Play video: {title}",
+      grokbot: {
+        title: "Install a template in Grok Bot (3 steps)",
+        description: "Create a bot, paste the setup message, and connect MCP tools.",
+      },
+      hermes: {
+        title: "Add a skill to Hermes Agent (3 steps)",
+        description: "Export SKILL.md with frontmatter and install it under ~/.hermes/skills/.",
+      },
+    },
     machineReadable: {
       heading: "Machine-readable catalog",
       llms: "Read the site overview and template directory.",
@@ -362,6 +375,7 @@ const en: Dictionary = {
     heading: "Export for your platform",
     download: "Download",
     copyExport: "Copy export",
+    watchHow: "Watch how",
     platformLabel: "Export target platform",
     descriptions: {
       "windsurf": "Windsurf instructions (.windsurfrules)",
