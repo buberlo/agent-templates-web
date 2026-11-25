@@ -44,6 +44,7 @@ const de: Dictionary = {
     metadata: "Metadaten",
     source: "Quelle",
     viewOnGitHub: "Auf GitHub ansehen",
+    editOnGitHub: "Auf GitHub bearbeiten",
     suggestImprovement: "Verbesserung vorschlagen",
     copy: "Kopieren",
     copied: "Kopiert",
@@ -301,6 +302,25 @@ const de: Dictionary = {
     statsLine: "{templates} Vorlagen in {categories} Kategorien",
     allTemplates: "Alle Vorlagen",
     domainMeta: "Agenten-Vorlagen in der Domain {domain}.",
+  },
+  contribute: {
+    nav: "Mitwirken",
+    title: "Vorlage beisteuern",
+    intro:
+      "Neue Vorlagen und Fixes landen im öffentlichen Repository buberlo/agent-templates. Änderungen per Pull Request einreichen; Validator und Katalog-Index müssen grün sein, bevor die Site neu baut.",
+    stepsHeading: "So reichst du ein",
+    steps: [
+      "Fork von buberlo/agent-templates anlegen und einen Branch für Vorlage oder Fix erstellen.",
+      "Markdown-Datei unter domains/ anlegen oder ändern – Frontmatter und Abschnitte wie in bestehenden Vorlagen.",
+      "Validator des Repositories lokal ausführen (scripts/validate_and_index.py), damit catalog.json konsistent bleibt.",
+      "Pull Request auf GitHub mit kurzer Beschreibung des Anwendungsfalls öffnen.",
+    ],
+    contributingGuide: "CONTRIBUTING.md im Content-Repository",
+    validator: "Validator-Skripte im Content-Repository",
+    openIssue: "GitHub-Issue öffnen, wenn noch kein PR bereit ist",
+    principleHeading: "Nach dem Merge",
+    principle:
+      "Nach dem Merge auf dem Default-Branch des Content-Repos deployt die Site automatisch neu und liest Versionshistorie aus Git. Vorlagentexte werden nicht außerhalb dieses Repositories gespeichert.",
   },
   changelog: {
     title: "Änderungsprotokoll",
