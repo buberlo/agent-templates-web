@@ -370,7 +370,8 @@ const de: Dictionary = {
       "cline": "Cline Anweisungen (.clinerules)",
       "kiro": "Kiro Anweisungen (.kiro/steering/<id>.md)",
       grokbot: "Eine Einrichtungsnachricht zum Einfügen als erste Nachricht in einem neuen Grok Bot.",
-      hermes: "Hermes-Skill (System-Prompt + Ablauf, ohne YAML-Frontmatter)",
+      hermes:
+        "Hermes-Skill mit YAML-Frontmatter (name + description) für ~/.hermes/skills/<name>/SKILL.md",
       openclaw: "OpenClaw-Skill (vor Produktion verifizieren)",
       "claude-code": "Claude-Code-Projektanweisungen",
       codex: "Codex / Multi-Agent AGENTS.md",
