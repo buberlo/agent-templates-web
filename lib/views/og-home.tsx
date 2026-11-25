@@ -6,7 +6,7 @@ export function ogHomeContent(locale: Locale) {
   const d = getDictionary(locale);
   const statsLine = `${stats.templateCount} · ${stats.domainCount} · ${stats.mcpServerCount}`;
   return {
-    brand: d.meta.ogTemplateBrand,
+    brand: d.site.name,
     title: d.meta.ogHomeTitle,
     stats: `${statsLine} ${d.meta.ogHomeSubtitle}`,
   };

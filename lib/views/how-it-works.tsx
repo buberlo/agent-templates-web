@@ -4,17 +4,21 @@ import {
   GROK_BOT_GALLERY_URL,
   GROK_BOT_TEMPLATE_GUIDE_URL,
 } from "@/lib/content/grok-bot-links";
+import type { Dictionary } from "@/lib/i18n/types";
 import { getDictionary, localizePath, type Locale } from "@/lib/i18n";
 
 export function HowItWorksPageContent({ locale }: { locale: Locale }) {
   const d = getDictionary(locale);
   const guide = d.howItWorks;
   const grok = guide.grokBot;
+  const additionalTargets = Object.keys(guide.additionalTargets) as
+    (keyof Dictionary["howItWorks"]["additionalTargets"])[];
   const platforms = [
     { title: `${d.platforms.hermes} / ${d.platforms.openclaw}`, steps: guide.hermesOpenClaw },
     { title: d.platforms["claude-code"], steps: guide.claudeCode },
     { title: d.platforms.codex, steps: guide.codex },
     { title: d.platforms.cursor, steps: guide.cursor },
+    ...additionalTargets.map((target) => ({ title: d.platforms[target], steps: guide.additionalTargets[target] })),
     { title: guide.otherAgents, steps: guide.generic },
   ];
 

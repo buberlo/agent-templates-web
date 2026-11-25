@@ -14,7 +14,7 @@ export function templateOgLabels(locale: Locale, id: string) {
         ? d.risk.medium
         : d.risk.low;
   return {
-    brand: d.meta.ogTemplateBrand,
+    brand: d.site.name,
     title,
     footer: `${domain} · ${riskLabel} ${d.risk.suffix}`,
   };

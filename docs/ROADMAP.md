@@ -13,7 +13,7 @@ Public static site: browse, search, filter, read templates, export per platform,
 ## Phase 3 — Community signal and CLI
 
 - Moderated “real user experience” reports tied to template IDs (not fabricated quotes or star ratings on the marketing site)
-- `npx agent-templates add <id> --target hermes` CLI reusing `lib/export` from this repo
+- `npx agentstencil add <id> --target hermes` CLI reusing `lib/export` from this repo
 - Webhook-triggered rebuilds when the content repo changes (documented in README)
 
 ## Non-goals for phase 1

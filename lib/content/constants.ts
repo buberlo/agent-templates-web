@@ -7,6 +7,11 @@ export const PLATFORM_LABELS: Record<string, string> = {
   cursor: "Cursor",
   "generic-mcp-agents": "Generic MCP agents",
   generic: "Generic",
+  "windsurf": "Windsurf",
+  "gemini-cli": "Gemini CLI",
+  "copilot": "GitHub Copilot",
+  "cline": "Cline",
+  "kiro": "Kiro",
 };
 
 export const EXPORT_TARGETS = [
@@ -17,6 +22,11 @@ export const EXPORT_TARGETS = [
   "codex",
   "cursor",
   "generic",
+  "windsurf",
+  "gemini-cli",
+  "copilot",
+  "cline",
+  "kiro",
 ] as const;
 
 export type ExportTarget = (typeof EXPORT_TARGETS)[number];

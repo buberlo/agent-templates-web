@@ -1,4 +1,4 @@
-import type { ExportTarget } from "@/lib/content/constants";
+import { EXPORT_TARGETS, type ExportTarget } from "@/lib/content/constants";
 import type { TemplateDocument } from "@/lib/content/types";
 
 export interface ExportResult {
@@ -117,7 +117,7 @@ function cursorRules(doc: TemplateDocument): string {
   const prompt = doc.sections.systemPromptText || section(doc, "purpose");
   return [
     `---`,
-    `description: ${fm.title} (agent-templates)`,
+    `description: ${fm.title} (AgentStencil)`,
     `globs: **/*`,
     `alwaysApply: false`,
     `---`,
@@ -198,6 +198,10 @@ function grokBotMessage(doc: TemplateDocument): string {
   ].join("\n");
 }
 
+function markdownInstructions(doc: TemplateDocument, filename: string, description: string): ExportResult {
+  return { filename, mimeType: "text/markdown", content: agentsMd(doc), description };
+}
+
 const EXPORT_MAP: Record<
   ExportTarget,
   (doc: TemplateDocument) => ExportResult
@@ -238,6 +242,14 @@ const EXPORT_MAP: Record<
     content: cursorRules(doc),
     description: "Cursor rule file (.mdc)",
   }),
+  "windsurf": (doc) => markdownInstructions(doc, ".windsurfrules", "Windsurf instructions"),
+  "gemini-cli": (doc) => markdownInstructions(doc, "GEMINI.md", "Gemini CLI instructions"),
+  "copilot": (doc) => markdownInstructions(doc, ".github/copilot-instructions.md", "GitHub Copilot instructions"),
+  "cline": (doc) => markdownInstructions(doc, ".clinerules", "Cline instructions"),
+  kiro: (doc) => {
+    const result = markdownInstructions(doc, `.kiro/steering/${doc.frontmatter.id}.md`, "Kiro steering");
+    return { ...result, content: `---\ninclusion: always\n---\n\n${result.content}` };
+  },
   generic: (doc) => ({
     filename: `${doc.frontmatter.id}-system-prompt.txt`,
     mimeType: "text/plain",
@@ -261,17 +273,9 @@ export function exportTemplateForAgents(
   doc: TemplateDocument,
   agent: string,
 ): ExportResult | null {
-  const map: Record<string, ExportTarget> = {
-    hermes: "hermes",
-    openclaw: "openclaw",
-    "claude-code": "claude-code",
-    codex: "codex",
-    cursor: "cursor",
-    generic: "generic",
-    "generic-mcp-agents": "generic",
-    grokbot: "grokbot",
-  };
-  const target = map[agent];
+  const target = agent === "generic-mcp-agents"
+    ? "generic"
+    : EXPORT_TARGETS.find((entry) => entry === agent);
   if (!target) return null;
   return exportTemplate(doc, target);
 }

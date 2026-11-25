@@ -10,7 +10,7 @@ export function SiteFooter() {
     <footer className="mt-auto border-t border-border py-10 text-sm text-muted">
       <div className="site-shell flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <p>
-          {dict.footer.contentFrom}{" "}
+          {dict.site.name} · {dict.footer.contentFrom}{" "}
           <a
             href="https://github.com/buberlo/agent-templates"
             className="text-link"
