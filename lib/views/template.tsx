@@ -3,12 +3,14 @@ import { notFound } from "next/navigation";
 import { ArrowDownToLine, ArrowUpRight, Plug } from "lucide-react";
 import { CopyButton } from "@/components/copy-button";
 import { ExampleKindBadge } from "@/components/example-kind-badge";
+import { McpConfigGenerator } from "@/components/mcp-config-generator";
 import { ExportPanel } from "@/components/export-panel";
 import { CodeBlock, MarkdownContent } from "@/components/markdown-content";
 import { RiskBadge } from "@/components/risk-badge";
 import { githubBlobUrl, PLATFORM_LABELS, suggestIssueUrl } from "@/lib/content/config";
 import { GROK_BOT_DOCS_URL } from "@/lib/content/grok-bot-links";
-import { getTemplate } from "@/lib/content/loader";
+import { getMcpCatalog, getTemplate } from "@/lib/content/loader";
+import { resolveMcpTools } from "@/lib/content/resolve-mcp-tools";
 import { exportTemplate } from "@/lib/export";
 import { getDictionary, localizePath, type Locale } from "@/lib/i18n";
 import { formatSlugLabel } from "@/lib/utils";
@@ -21,9 +23,8 @@ export function TemplatePageContent({ locale, id }: { locale: Locale; id: string
   const fm = doc.frontmatter;
   const content = doc.sections;
   const grok = d.howItWorks.grokBot;
-  const mcpTools = [...new Set(fm.required_tools
-    .filter((tool) => /\bmcp\b/i.test(tool.name) || /\bmcp\b/i.test(tool.install))
-    .map((tool) => tool.name))];
+  const resolvedMcpTools = resolveMcpTools(fm.required_tools, getMcpCatalog());
+  const mcpTools = [...new Set(resolvedMcpTools.map((tool) => tool.name))];
 
   const sections = [
     { id: "purpose", label: d.template.sections.purpose, body: content.purpose },
@@ -35,6 +36,9 @@ export function TemplatePageContent({ locale, id }: { locale: Locale; id: string
           {mcpTools.map((tool) => <li key={tool} className="chip gap-1.5"><Plug size={14} className="shrink-0 text-accent" aria-hidden="true" />{tool}</li>)}
         </ul>
       </div>
+    ) },
+    { id: "mcp-config", label: d.mcpConfig.heading, extra: resolvedMcpTools.length > 0 && (
+      <McpConfigGenerator tools={resolvedMcpTools} />
     ) },
     { id: "system-prompt", label: d.template.sections.systemPrompt, extra: content.systemPromptText
       ? <CodeBlock text={content.systemPromptText} label={d.template.copyPrompt} wrap />

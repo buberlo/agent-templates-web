@@ -2,7 +2,7 @@ import type { Dictionary } from "../types";
 
 const en: Dictionary = {
   site: {
-    name: "Agent Templates",
+    name: "AgentStencil",
     phaseBadge: "Phase 1 · Public catalog",
   },
   nav: {
@@ -13,7 +13,7 @@ const en: Dictionary = {
   language: {
     label: "Language",
     en: "English",
-    de: "Deutsch",
+    de: "German",
   },
   theme: {
     switchToLight: "Switch to light mode",
@@ -66,6 +66,11 @@ const en: Dictionary = {
     "claude-code": "Claude Code",
     codex: "Codex",
     cursor: "Cursor",
+    "windsurf": "Windsurf",
+    "gemini-cli": "Gemini CLI",
+    "copilot": "GitHub Copilot",
+    "cline": "Cline",
+    "kiro": "Kiro",
     "generic-mcp-agents": "Generic MCP agents",
     generic: "Generic",
   },
@@ -81,9 +86,9 @@ const en: Dictionary = {
     unknown: "Example",
   },
   home: {
-    headlineStart: "Build better agents.",
+    headlineStart: "Build with AgentStencil.",
     headlineEnd: "Start with a template.",
-    value: "Find reusable AI agent instructions with workflows, tool requirements, and safety guidance. Export the template for the agent you use.",
+    value: "Find reusable agent instructions, export them for your platform, and generate MCP configuration for the tools your template uses.",
     featured: "Featured templates",
     browseDomains: "Browse by domain",
     importFind: "Pick a template",
@@ -114,7 +119,7 @@ const en: Dictionary = {
   howItWorks: {
     title: "How it works",
     kicker: "Template guide",
-    intro: "An open catalog of task-specific agent templates from the public repository buberlo/agent-templates. A template typically includes a system prompt, workflow, tool and MCP stack, safety rules, and examples.",
+    intro: "AgentStencil turns templates from buberlo/agent-templates into instructions for your agent. Choose a template, review its workflow and safety guidance, then export it and configure any MCP servers it requires.",
     readGuide: "Read the setup guide",
     grokBot: {
       heading: "Use in Grok Bot",
@@ -146,6 +151,13 @@ const en: Dictionary = {
       "Download the .mdc rule.",
       "Add it to your project’s rules.",
     ],
+    additionalTargets: {
+      "windsurf": ["Save the export as .windsurfrules in your project."],
+      "gemini-cli": ["Save the export as GEMINI.md in your project."],
+      "copilot": ["Save the export as .github/copilot-instructions.md in your project."],
+      "cline": ["Save the export as .clinerules in your project."],
+      "kiro": ["Save the export as .kiro/steering/<id>.md in your project.", "The steering file applies to every interaction."],
+    },
     generic: [
       "Copy the generic prompt.",
       "Paste it into your agent’s instructions.",
@@ -164,6 +176,19 @@ const en: Dictionary = {
     title: "MCP server catalog",
     intro:
       "{count} entries from mcp/catalog.json in the content repo (generated {date}).",
+  },
+  mcpConfig: {
+    heading: "MCP configuration",
+    client: "MCP client",
+    editor: "Editor",
+    transport: "Transport",
+    stdio: "Local (stdio)",
+    http: "Remote HTTP / SSE",
+    file: "Target file",
+    merge: "Merge these entries into any existing configuration.",
+    authUnknown: "See the server documentation.",
+    placeholders: "Replace angle-bracket placeholders using the server documentation before enabling the configuration.",
+    copy: "Copy configuration",
   },
   domain: {
     statsLine: "{templates} templates across {categories} categories",
@@ -195,6 +220,11 @@ const en: Dictionary = {
     copyExport: "Copy export",
     platformLabel: "Export target platform",
     descriptions: {
+      "windsurf": "Windsurf instructions (.windsurfrules)",
+      "gemini-cli": "Gemini CLI instructions (GEMINI.md)",
+      "copilot": "GitHub Copilot instructions (.github/copilot-instructions.md)",
+      "cline": "Cline instructions (.clinerules)",
+      "kiro": "Kiro instructions (.kiro/steering/<id>.md)",
       grokbot: "A setup message to paste as the first message in a new Grok Bot.",
       hermes: "Hermes skill (system prompt + workflow, no YAML frontmatter)",
       openclaw: "OpenClaw skill body (verify before production)",
@@ -205,8 +235,8 @@ const en: Dictionary = {
     },
   },
   meta: {
-    titleDefault: "Agent Templates",
-    titleTemplate: "%s · Agent Templates",
+    titleDefault: "AgentStencil",
+    titleTemplate: "%s · AgentStencil",
     description:
       "Browse, search, and export reusable AI agent instruction templates from the buberlo/agent-templates database.",
     ogDescription:
@@ -219,7 +249,6 @@ const en: Dictionary = {
       "MCP servers referenced by the agent-templates content database.",
     ogHomeTitle: "Reusable agent instruction library",
     ogHomeSubtitle: "templates · domains · MCP entries",
-    ogTemplateBrand: "Agent Templates",
   },
 };
 

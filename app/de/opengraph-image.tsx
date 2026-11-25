@@ -1,7 +1,8 @@
+import { getDictionary } from "@/lib/i18n";
 import { catalogOgImage } from "@/lib/views/og-image";
 import { ogHomeContent } from "@/lib/views/og-home";
 
-export const alt = "Agent Templates";
+export const alt = getDictionary("de").site.name;
 export const runtime = "nodejs";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";

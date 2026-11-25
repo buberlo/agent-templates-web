@@ -49,7 +49,7 @@ export function ExportPanel({ doc }: { doc: ExportPanelDoc }) {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = result.filename;
+    a.download = result.filename.split("/").pop() ?? result.filename;
     a.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   }

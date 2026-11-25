@@ -1,4 +1,4 @@
-# agent-templates-web
+# AgentStencil
 
 Public website for [buberlo/agent-templates](https://github.com/buberlo/agent-templates): browse, search, and export reusable AI agent instruction templates.
 
@@ -38,6 +38,7 @@ npm run dev
 | `npm run build` | Production build (SSG) |
 | `npm run lint` | ESLint |
 | `npm run typecheck` | `tsc --noEmit` |
+| `npm test` | Run unit tests |
 
 ## Vercel deployment
 
@@ -73,12 +74,12 @@ Every template has a copyable Grok Bot setup message. Content authors can add th
 - **`scripts/fetch-content.mjs`** — shallow clone of the content repository.
 - **`lib/i18n/`** — UI locales (`en`, `de`) and path helpers (`/de` prefix).
 - **`lib/content/`** — parse frontmatter, bilingual section headings (German/English), catalog + MCP loaders.
-- **`lib/export/`** — platform exports (Hermes/OpenClaw `SKILL.md`, `CLAUDE.md`, `AGENTS.md`, Cursor `.mdc`, Grok Bot setup message, generic prompt). Intended for reuse by a future CLI.
+- **`lib/export/`** — platform exports (Hermes/OpenClaw `SKILL.md`, `CLAUDE.md`, `AGENTS.md`, Cursor `.mdc`, Grok Bot setup message, generic prompt). Includes 12 export targets and seven MCP configuration formats. See the [CLI specification](docs/cli-spec.md) for the planned command-line interface.
 - **Pages** — landing, catalog (client-side FlexSearch index), domain/category, template detail, MCP table.
 
 ## Roadmap
 
-See [`docs/ROADMAP.md`](docs/ROADMAP.md) for phases 2 (GitHub login + Postgres favorites) and 3 (moderated experience reports + `npx agent-templates add`).
+See [`docs/ROADMAP.md`](docs/ROADMAP.md) for phases 2 (GitHub login + Postgres favorites) and 3 (moderated experience reports + `npx agentstencil add`).
 
 ## License
 

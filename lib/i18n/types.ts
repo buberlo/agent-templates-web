@@ -1,3 +1,7 @@
+import type { ExportTarget } from "@/lib/content/constants";
+
+type AdditionalInstructionTarget = "windsurf" | "gemini-cli" | "copilot" | "cline" | "kiro";
+
 export const LOCALES = ["en", "de"] as const;
 export type Locale = (typeof LOCALES)[number];
 export const DEFAULT_LOCALE: Locale = "en";
@@ -60,7 +64,7 @@ export type Dictionary = {
     name: string;
     type: string;
   };
-  platforms: {
+  platforms: Record<AdditionalInstructionTarget, string> & {
     hermes: string;
     grokbot: string;
     openclaw: string;
@@ -133,6 +137,7 @@ export type Dictionary = {
     codex: string[];
     cursor: string[];
     generic: string[];
+    additionalTargets: Record<AdditionalInstructionTarget, string[]>;
   };
   catalog: {
     empty: string;
@@ -146,6 +151,19 @@ export type Dictionary = {
   mcp: {
     title: string;
     intro: string;
+  };
+  mcpConfig: {
+    heading: string;
+    client: string;
+    editor: string;
+    transport: string;
+    stdio: string;
+    http: string;
+    file: string;
+    merge: string;
+    authUnknown: string;
+    placeholders: string;
+    copy: string;
   };
   domain: {
     statsLine: string;
@@ -176,15 +194,7 @@ export type Dictionary = {
     download: string;
     copyExport: string;
     platformLabel: string;
-    descriptions: {
-      grokbot: string;
-      hermes: string;
-      openclaw: string;
-      "claude-code": string;
-      codex: string;
-      cursor: string;
-      generic: string;
-    };
+    descriptions: Record<ExportTarget, string>;
   };
   meta: {
     titleDefault: string;
@@ -197,6 +207,5 @@ export type Dictionary = {
     mcpDescription: string;
     ogHomeTitle: string;
     ogHomeSubtitle: string;
-    ogTemplateBrand: string;
   };
 };

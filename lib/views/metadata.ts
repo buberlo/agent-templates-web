@@ -20,7 +20,7 @@ export function rootLayoutMetadata(locale: Locale): Metadata {
     description: d.meta.description,
     openGraph: {
       type: "website",
-      siteName: d.meta.titleDefault,
+      siteName: d.site.name,
       title: d.meta.titleDefault,
       description: d.meta.ogDescription,
       locale: locale === "de" ? "de_DE" : "en_US",
@@ -28,7 +28,7 @@ export function rootLayoutMetadata(locale: Locale): Metadata {
         url: localizePath(locale, "/opengraph-image"),
         width: 1200,
         height: 630,
-        alt: d.meta.ogTemplateBrand,
+        alt: d.site.name,
       }],
     },
     twitter: {

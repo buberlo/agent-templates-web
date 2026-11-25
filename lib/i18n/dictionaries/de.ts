@@ -2,7 +2,7 @@ import type { Dictionary } from "../types";
 
 const de: Dictionary = {
   site: {
-    name: "Agent Templates",
+    name: "AgentStencil",
     phaseBadge: "Phase 1 · Öffentlicher Katalog",
   },
   nav: {
@@ -66,6 +66,11 @@ const de: Dictionary = {
     "claude-code": "Claude Code",
     codex: "Codex",
     cursor: "Cursor",
+    "windsurf": "Windsurf",
+    "gemini-cli": "Gemini CLI",
+    "copilot": "GitHub Copilot",
+    "cline": "Cline",
+    "kiro": "Kiro",
     "generic-mcp-agents": "Generic MCP agents",
     generic: "Generic",
   },
@@ -81,9 +86,9 @@ const de: Dictionary = {
     unknown: "Beispiel",
   },
   home: {
-    headlineStart: "Bessere Agents bauen.",
+    headlineStart: "Mit AgentStencil arbeiten.",
     headlineEnd: "Mit einer Vorlage starten.",
-    value: "Finde wiederverwendbare Anweisungen für KI-Agents mit Abläufen, Werkzeugen und Sicherheitshinweisen. Exportiere die Vorlage für deinen Agent.",
+    value: "Finde wiederverwendbare Agent-Anweisungen, exportiere sie für deine Plattform und erstelle eine MCP-Konfiguration für die benötigten Werkzeuge.",
     featured: "Ausgewählte Vorlagen",
     browseDomains: "Nach Themengebiet stöbern",
     importFind: "Vorlage auswählen",
@@ -114,7 +119,7 @@ const de: Dictionary = {
   howItWorks: {
     title: "So funktioniert’s",
     kicker: "Anleitung zu den Vorlagen",
-    intro: "Ein offener Katalog aufgabenspezifischer Agent-Vorlagen aus dem öffentlichen Repository buberlo/agent-templates. Eine Vorlage enthält typischerweise einen Systemprompt, einen Ablauf, Werkzeuge und MCP-Connectoren, Sicherheitsregeln und Beispiele.",
+    intro: "AgentStencil macht Vorlagen aus buberlo/agent-templates für deinen Agent nutzbar. Wähle eine Vorlage, prüfe den Ablauf und die Sicherheitshinweise, exportiere sie und konfiguriere die benötigten MCP-Server.",
     readGuide: "Anleitung lesen",
     grokBot: {
       heading: "In Grok Bot verwenden",
@@ -146,6 +151,13 @@ const de: Dictionary = {
       "Lade die .mdc-Regel herunter.",
       "Füge sie zu den Regeln deines Projekts hinzu.",
     ],
+    additionalTargets: {
+      "windsurf": ["Speichere den Export im Projekt unter .windsurfrules."],
+      "gemini-cli": ["Speichere den Export im Projekt unter GEMINI.md."],
+      "copilot": ["Speichere den Export im Projekt unter .github/copilot-instructions.md."],
+      "cline": ["Speichere den Export im Projekt unter .clinerules."],
+      "kiro": ["Speichere den Export im Projekt unter .kiro/steering/<id>.md.", "Die Steering-Datei gilt für jede Interaktion."],
+    },
     generic: [
       "Kopiere den allgemeinen Prompt.",
       "Füge ihn in die Anweisungen deines Agents ein.",
@@ -164,6 +176,19 @@ const de: Dictionary = {
     title: "MCP-Server-Katalog",
     intro:
       "{count} Einträge aus mcp/catalog.json im Content-Repo (generiert {date}).",
+  },
+  mcpConfig: {
+    heading: "MCP-Konfiguration",
+    client: "MCP-Client",
+    editor: "Editor",
+    transport: "Transport",
+    stdio: "Lokal (stdio)",
+    http: "Remote HTTP / SSE",
+    file: "Zieldatei",
+    merge: "Füge diese Einträge in eine vorhandene Konfiguration ein.",
+    authUnknown: "Siehe Serverdokumentation.",
+    placeholders: "Ersetze die Platzhalter in spitzen Klammern anhand der Serverdokumentation, bevor du die Konfiguration aktivierst.",
+    copy: "Konfiguration kopieren",
   },
   domain: {
     statsLine: "{templates} Vorlagen in {categories} Kategorien",
@@ -195,6 +220,11 @@ const de: Dictionary = {
     copyExport: "Export kopieren",
     platformLabel: "Zielplattform",
     descriptions: {
+      "windsurf": "Windsurf Anweisungen (.windsurfrules)",
+      "gemini-cli": "Gemini CLI Anweisungen (GEMINI.md)",
+      "copilot": "GitHub Copilot Anweisungen (.github/copilot-instructions.md)",
+      "cline": "Cline Anweisungen (.clinerules)",
+      "kiro": "Kiro Anweisungen (.kiro/steering/<id>.md)",
       grokbot: "Eine Einrichtungsnachricht zum Einfügen als erste Nachricht in einem neuen Grok Bot.",
       hermes: "Hermes-Skill (System-Prompt + Ablauf, ohne YAML-Frontmatter)",
       openclaw: "OpenClaw-Skill (vor Produktion verifizieren)",
@@ -205,8 +235,8 @@ const de: Dictionary = {
     },
   },
   meta: {
-    titleDefault: "Agent Templates",
-    titleTemplate: "%s · Agent Templates",
+    titleDefault: "AgentStencil",
+    titleTemplate: "%s · AgentStencil",
     description:
       "Durchsuchen und exportieren Sie wiederverwendbare KI-Agenten-Vorlagen aus der Datenbank buberlo/agent-templates.",
     ogDescription:
@@ -219,7 +249,6 @@ const de: Dictionary = {
       "MCP-Server aus der agent-templates-Content-Datenbank.",
     ogHomeTitle: "Bibliothek für Agenten-Instruktionen",
     ogHomeSubtitle: "Vorlagen · Domains · MCP-Einträge",
-    ogTemplateBrand: "Agent Templates",
   },
 };
 
